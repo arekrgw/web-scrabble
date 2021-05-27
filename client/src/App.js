@@ -3,6 +3,9 @@ const App = () => {
     <div>
       <header>YO</header>
       <p>Happy Coding</p>
+      <p>Happy Coding</p>
+      <p>Happy Coding</p>
+      <p>Happy Coding</p>
     </div>
   );
 };

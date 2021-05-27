@@ -8,6 +8,7 @@ const App = () => {
       <p>Happy Coding</p>
       <h1>New HEADER</h1>
       <button>Click 3</button>
+      <button>Click 3</button>
     </div>
   );
 };

@@ -1,11 +1,14 @@
-from flask import Flask, render_template, request, session
-from flask_socketio import SocketIO, emit, join_room
-
+from User import *
+from Board import *
+from flask import Flask, render_template, request
+from flask_socketio import SocketIO, emit
 
 app = Flask(__name__)
 socketio = SocketIO(app)
 
-clients = []
+can_connect = True
+player_list=[]
+
 
 @app.route('/')
 def index():
@@ -13,13 +16,15 @@ def index():
 
 @socketio.on('connect')
 def joined():
-    clients.append(request.sid)
+    if can_connect:
+        player=User(request.sid)
+        player_list.append(player)
+        send_data()
 
-    send_data()
 
 def send_data():
-    for i in clients:
-        emit('after connect', {'data': i}, room=i)
+    for i in player_list:
+        emit('after connect', {'data': i.getID()}, room=i.getID())
 
 
 
@@ -31,4 +36,5 @@ def send_data():
 
 
 if __name__ == '__main__':
+    tablica = Board()
     socketio.run(app)

@@ -1,16 +1,35 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+from flask import Flask, render_template, request, session
+from flask_socketio import SocketIO, emit, join_room
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+app = Flask(__name__)
+socketio = SocketIO(app)
+
+clients = []
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@socketio.on('connect')
+def joined():
+    clients.append(request.sid)
+    room = session.get('room')
+    join_room(room)
+    send_data()
+
+def send_data():
+    for i in clients:
+        emit('after connect', {'data': i}, room=i)
 
 
-# Press the green button in the gutter to run the script.
+
+
+
+
+
+
+
+
 if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    socketio.run(app)

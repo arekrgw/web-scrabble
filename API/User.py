@@ -7,3 +7,10 @@ class User():
     def getID(self):
         return self.user_id
 
+    def getScore(self):
+        return self.score
+
+    def getLetters(self):
+        return self.letters
+
+

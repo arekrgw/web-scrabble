@@ -31,3 +31,8 @@ class Board():
             self.board_check[coordinate[0]][coordinate[1]] = "DWS"
         for coordinate in DOUBLE_LETTER_SCORE:
             self.board_check[coordinate[0]][coordinate[1]] = "DLS"
+
+    def getBoard(self):
+        res=[ y for x in self.board for y in x]
+        ','.join(map(str, res))
+

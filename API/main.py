@@ -8,7 +8,7 @@ socketio = SocketIO(app)
 
 can_connect = True
 player_list=[]
-
+board = Board()
 
 @app.route('/')
 def index():
@@ -24,7 +24,8 @@ def joined():
 
 def send_data():
     for i in player_list:
-        emit('after connect', {'data': i.getID()}, room=i.getID())
+        emit('after connect', {'data': board.getBoard()}, room=i.getID())
+
 
 
 
@@ -36,5 +37,4 @@ def send_data():
 
 
 if __name__ == '__main__':
-    tablica = Board()
     socketio.run(app)

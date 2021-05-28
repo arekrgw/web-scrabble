@@ -14,8 +14,7 @@ def index():
 @socketio.on('connect')
 def joined():
     clients.append(request.sid)
-    room = session.get('room')
-    join_room(room)
+
     send_data()
 
 def send_data():

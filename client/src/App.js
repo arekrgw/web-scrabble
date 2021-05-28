@@ -1,7 +1,9 @@
 const App = () => {
   return (
     <div>
-    <div class="grid-container"></div>
+    <div className="grid-container">
+    
+    </div>
     </div>
   );
 };

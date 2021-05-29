@@ -18,3 +18,5 @@ client/.env.production.local
 client/npm-debug.log*
 client/yarn-debug.log*
 client/yarn-error.log*
+
+api/__pycache__

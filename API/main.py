@@ -1,23 +1,21 @@
 from User import *
 from Board import *
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session
 from flask_socketio import SocketIO, emit
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
-socketio = SocketIO(app)
+socketio = SocketIO(app, cors_allowed_origins="*")
+
 
 can_connect = True
 player_list=[]
 board = Board()
 
-@app.route('/')
-def index():
-    return render_template('index.html')
-
 @socketio.on('connect')
 def joined():
     if can_connect:
-        player=User(request.sid)
+        player=User(request.sid, request.args.get('name'))
         player_list.append(player)
         send_data()
 
@@ -51,7 +49,7 @@ def check_if_ready_to_start():
 
 def send_data():
     for i in player_list:
-        emit('after connect', {'data': i.getID()}, room=i.getID())
+        emit('after connect', {'data': i.getID(), 'name': i.getName()}, room=i.getID())
 
 
 
@@ -64,4 +62,4 @@ def send_data():
 
 
 if __name__ == '__main__':
-    socketio.run(app)
+    socketio.run(app,port=5000,host='0.0.0.0')

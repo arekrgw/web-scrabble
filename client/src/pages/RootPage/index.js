@@ -1,22 +1,19 @@
 import { useStore } from '../../stores';
+import { useState } from 'react';
 import { routes } from '../../__app/routes';
 import { StyledH1 } from './style';
-import { stores } from '../../stores';
-import { runInAction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 
-setTimeout(() => {
-  runInAction(() => {
-    stores.gameStore.test = 'kot ma ale';
-  });
-}, 5000);
-
 const MainPage = () => {
+  const [playerName, setPlayerName] = useState('');
   const { routerStore, gameStore } = useStore();
+
   return (
     <>
-      <StyledH1>Main page {gameStore.test}</StyledH1>
-      <button onClick={() => routerStore.push(routes.game)}>Go to game</button>
+      <StyledH1>Scrabble!</StyledH1>
+      {gameStore.sid && <p>{gameStore.sid}</p>}
+      <input type="text" value={playerName} onChange={(ev) => setPlayerName(ev.target.value)} />
+      <button disabled={!playerName.length} onClick={() => gameStore.initConnection(playerName)}>Dołącz do pokoju</button>
     </>
   );
 };

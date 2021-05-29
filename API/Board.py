@@ -35,4 +35,5 @@ class Board():
     def getBoard(self):
         res=[ y for x in self.board for y in x]
         ','.join(map(str, res))
+        return res
 

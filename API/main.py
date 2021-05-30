@@ -21,15 +21,6 @@ def joined():
 
 
 
-@socketio.on('player_ready')
-def event(data, methods=['GET', 'POST']):
-    temp=str(data)
-    l=len(temp)
-    dat=temp[10:l-2]
-    for i in player_list:
-        if(str(i.getID())==dat):
-            i.setReady()
-    check_if_ready_to_start()
 
 @socketio.on('game_ready_to_start')
 def game_ready():
@@ -39,24 +30,16 @@ def game_ready():
 
 
 def check_if_ready_to_start():
-    if(len(player_list)==2 or len(player_list)==4):
-        for i in player_list:
-            if(i.getReady()==False):
-                return
+    if(len(player_list)==4):
         game_ready()
 
 
 
 def send_data():
+    lobby_list=[]
     for i in player_list:
-        emit('after connect', {'data': i.getID(), 'name': i.getName()}, room=i.getID())
-
-
-
-
-
-
-
+        lobby_list.append(i.getName)
+    emit('lobby', {'number':len(player_list),'name': lobby_list}, broadcast=True)
 
 
 

@@ -1,26 +1,34 @@
 import { makeAutoObservable } from 'mobx';
-import { io } from 'socket.io-client'
+import { io } from 'socket.io-client';
 import { SERVER_URL } from '../__app/constats';
+import { routes } from '../__app/routes';
 
 export class GameStore {
   socketHandler = null;
+  playerName = '';
   sid = null;
+  parent = null;
 
-  constructor() {
+  constructor(parent) {
     makeAutoObservable(this);
+    this.parent = parent;
   }
 
   initConnection = (playerName) => {
+    this.playerName = playerName;
     this.socketHandler = io(SERVER_URL, { query: { name: playerName } });
-    this.socketHandler.on('after connect', this.afterConnectHandler);
-  }
+    this.socketHandler.on('connect', this.afterConnectHandler);
+  };
 
-  afterConnectHandler = (msg) => {
-    console.log(msg)
-    this.sid = msg.data;
-  }
+  afterConnectHandler = () => {
+    this.sid = this.socketHandler.id;
+    this.socketHandler.on('lobby', this.lobbyHandler);
+    this.parent.routerStore.push(routes.lobby);
+  };
 
-  clearStore = () => {
+  lobbyHandler = (msg) => {
+    console.log(msg);
+  };
 
-  }
+  clearStore = () => {};
 }

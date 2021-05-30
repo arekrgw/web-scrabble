@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx';
 import { io } from 'socket.io-client';
-import { SERVER_URL } from '../__app/constats';
+import { SERVER_URL } from '../__app/constants';
 import { routes } from '../__app/routes';
 
 export class GameStore {
@@ -17,12 +17,12 @@ export class GameStore {
   initConnection = (playerName) => {
     this.playerName = playerName;
     this.socketHandler = io(SERVER_URL, { query: { name: playerName } });
+    this.socketHandler.on('lobby', this.lobbyHandler);
     this.socketHandler.on('connect', this.afterConnectHandler);
   };
 
   afterConnectHandler = () => {
     this.sid = this.socketHandler.id;
-    this.socketHandler.on('lobby', this.lobbyHandler);
     this.parent.routerStore.push(routes.lobby);
   };
 

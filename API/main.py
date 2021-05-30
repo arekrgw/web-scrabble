@@ -38,8 +38,8 @@ def check_if_ready_to_start():
 def send_data():
     lobby_list=[]
     for i in player_list:
-        lobby_list.append(i.getName)
-    emit('lobby', {'number':len(player_list),'name': lobby_list}, broadcast=True)
+        lobby_list.append(i.getName())
+    emit('lobby', {'number':len(player_list),'names': lobby_list, 'max': 4}, broadcast=True)
 
 
 

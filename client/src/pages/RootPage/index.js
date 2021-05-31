@@ -1,14 +1,12 @@
 import { useStore } from '../../stores';
 import { useState } from 'react';
-import { routes } from '../../__app/routes';
-import { StyledH1 } from './style';
 import { Flex, Input, FormControl, FormLabel, Button } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
-import ScrabbleTitle from '../../components/ScrabbleTitle';
+import TileTitle from '../../components/TileTitle';
 
 const MainPage = () => {
   const [playerName, setPlayerName] = useState('');
-  const { routerStore, gameStore } = useStore();
+  const { gameStore } = useStore();
 
   return (
     <Flex
@@ -17,7 +15,7 @@ const MainPage = () => {
       justifyContent="center"
       alignItems="center"
     >
-      <ScrabbleTitle />
+      <TileTitle title="Scrabble" size="normal" />
       <Flex flexDirection="column" width="25%" alignItems="center" mt="100px">
         <FormControl id="name">
           <FormLabel>Podaj swój nick</FormLabel>
@@ -41,15 +39,6 @@ const MainPage = () => {
       </Flex>
     </Flex>
   );
-
-  // return (
-  //   <>
-  //     <StyledH1>Scrabble!</StyledH1>
-  //     {gameStore.sid && <p>{gameStore.sid}</p>}
-  //     <input type="text" value={playerName} onChange={(ev) => setPlayerName(ev.target.value)} />
-  //     <button disabled={!playerName.length} onClick={() => gameStore.initConnection(playerName)}>Dołącz do pokoju</button>
-  //   </>
-  // );
 };
 
 export default observer(MainPage);

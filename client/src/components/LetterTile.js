@@ -1,33 +1,62 @@
 import { Flex, Text } from '@chakra-ui/react';
 import { useTheme } from '@chakra-ui/system';
 
-const LetterTile = ({ letter, points, onClick, ...rest }) => {
+const SIZES = {
+  normal: {
+    borderWidth: '5px',
+    borderRadius: '15px',
+    box: '90px',
+    fontSize: '5xl',
+    corner: '2',
+    pointsSize: 'lg',
+  },
+  game: {
+    borderWidth: '3px',
+    borderRadius: '7px',
+    box: '45px',
+    fontSize: '2xl',
+    corner: '1',
+    pointsSize: 'sm',
+  },
+};
+
+const LetterTile = ({ letter, points, onClick, size, ...rest }) => {
   const theme = useTheme();
 
   return (
     <Flex
-      borderRadius="15px"
-      p="5px 5px 0 0"
+      borderRadius={SIZES[size].borderRadius}
+      p={`${SIZES[size].borderWidth} ${SIZES[size].borderWidth} 0 0`}
       background={theme.colors.tileBackground}
       position="relative"
-      width="90px"
-      height="90px"
+      width={SIZES[size].box}
+      height={SIZES[size].box}
       justifyContent="center"
       alignItems="center"
       onClick={() => (onClick ? onClick({ letter, points }) : null)}
-      borderLeft={`5px solid ${theme.colors.tileBorder}`}
-      borderBottom={`5px solid ${theme.colors.tileBorder}`}
+      borderLeft={`${SIZES[size].borderWidth} solid ${theme.colors.tileBorder}`}
+      borderBottom={`${SIZES[size].borderWidth} solid ${theme.colors.tileBorder}`}
       boxShadow="base"
       {...rest}
     >
-      <Text fontSize="5xl" lineHeight="100%" fontWeight="bold">
+      <Text fontSize={SIZES[size].fontSize} lineHeight="100%" fontWeight="bold">
         {letter.toUpperCase()}
       </Text>
-      <Text position="absolute" lineHeight="100%" right="2" bottom="2">
+      <Text
+        position="absolute"
+        lineHeight="100%"
+        right={SIZES[size].corner}
+        bottom={SIZES[size].corner}
+        fontSize={SIZES[size].pointsSize}
+      >
         {points}
       </Text>
     </Flex>
   );
+};
+
+LetterTile.defaultProps = {
+  size: 'game',
 };
 
 export default LetterTile;

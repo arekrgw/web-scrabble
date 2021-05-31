@@ -1,8 +1,9 @@
+import React from 'react';
 import LetterTile from './LetterTile';
 import { Flex } from '@chakra-ui/react';
 import { LETTERS } from '../__app/constants';
 
-const TileTitle = ({ title, size }) => {
+const TileTitle = React.memo(({ title, size }) => {
   return (
     <Flex width="fit-content">
       {title
@@ -19,6 +20,6 @@ const TileTitle = ({ title, size }) => {
         ))}
     </Flex>
   );
-};
+});
 
 export default TileTitle;

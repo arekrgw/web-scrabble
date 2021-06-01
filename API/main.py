@@ -1,7 +1,9 @@
 from User import *
 from Board import *
+from Game import *
 from flask import Flask, render_template, request, session
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO, emit, send
+import uuid
 
 
 
@@ -12,35 +14,42 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 can_connect = True
 player_list=[]
 board = Board()
+game = Game()
 
 @socketio.on('connect')
 def joined():
-    if can_connect:
-        player=User(request.sid, request.args.get('name'))
+    if game.getConnected_players()<4:
+        player=User(request.sid, request.args.get('name'), None)
         player_list.append(player)
-        accept()
+        game.Connected_player()
+        emit('con_request',{'Con':'Yes','id':player.getID()},room=player.getUserID())
+        send_data()
         check_if_ready_to_start()
     else:
-        reject()
+        emit('con_request',{'Con':'No','id':None})
 
 
 
 
-
+def game_status():
+    if(game.game_status==True):
+        emit('game_status', {'data': 'start'}, broadcast=True)
+    else:
+        emit('game_status', {'data': 'end'}, broadcast=True)
 
 
 def check_if_ready_to_start():
-    if(len(player_list)==4):
-        can_connect=False
+    if game.getConnected_players()==4:
+        game.setGameStart()
+        game_status()
 
 
-def accept():
-    emit('connection', {'data': 'Success'})
-    send_data()
-def reject():
-    emit('connection', {'data': 'Rejected'})
+
+
+
 
 def send_data():
+
     lobby_list=[]
     for i in player_list:
         lobby_list.append(i.getName())

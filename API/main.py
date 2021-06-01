@@ -19,9 +19,18 @@ game = Game()
 @socketio.on('connect')
 def joined():
     if game.getConnected_players()<4:
-        player=User(request.sid, request.args.get('name'), None)
-        player_list.append(player)
-        game.Connected_player()
+        player=User(request.sid, request.args.get('name'), request.args.get('id'))
+        if(game.getGameStatus()==True):
+            for i in player_list:
+                if i.getID()==player.getID():
+                    player=i
+                    game.Connected_player()
+            else:
+                emit('con_request',{'Con':'No','id':None})
+                return
+        else:
+            player_list.append(player)
+            game.Connected_player()
         emit('con_request',{'Con':'Yes','id':player.getID()},room=player.getUserID())
         send_data()
         check_if_ready_to_start()

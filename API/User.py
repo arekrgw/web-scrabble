@@ -10,7 +10,7 @@ class User():
         self.name=name
         self.score=0
         self.letters=[]
-        self.player_ready=False
+        self.player_connected=False
 
     def getUserID(self):
         return self.user_id
@@ -30,7 +30,8 @@ class User():
     def getName(self):
         return self.name
 
-    def setReady(self):
-        self.player_ready=True
-
+    def setConnected(self):
+        self.player_connected=True
+    def setDisconnected(self):
+        self.player_connected=False
 

@@ -2,7 +2,8 @@ from User import *
 from Board import *
 from flask import Flask, render_template, request, session
 from flask_socketio import SocketIO, emit
-from flask_cors import CORS, cross_origin
+
+
 
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*")
@@ -18,20 +19,22 @@ def joined():
         player=User(request.sid, request.args.get('name'))
         player_list.append(player)
         send_data()
+        check_if_ready_to_start()
+    else:
+        emit('lobby_reject', {'data':'lobby jest pełne'},room=request.sid)
 
 
 
 
-@socketio.on('game_ready_to_start')
-def game_ready():
-        emit('game_ready', {'data':'Można zaczynać'},broadcast=True)
+
+
 
 
 
 
 def check_if_ready_to_start():
     if(len(player_list)==4):
-        game_ready()
+        can_connect=False
 
 
 
@@ -40,6 +43,7 @@ def send_data():
     for i in player_list:
         lobby_list.append(i.getName())
     emit('lobby', {'current':len(player_list),'players': lobby_list, 'max': 4}, broadcast=True)
+
 
 
 

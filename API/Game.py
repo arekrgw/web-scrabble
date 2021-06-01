@@ -21,3 +21,6 @@ class Game():
     def setGameStart(self):
         self.game_status=True;
 
+    def getGameStatus(self):
+        return self.game_status
+

@@ -33,7 +33,8 @@ def joined():
             game.Connected_player()
         emit('con_request',{'Con':'Yes','id':player.getID()},room=player.getUserID())
         send_data()
-        check_if_ready_to_start()
+        if game.getGameStatus()==False:
+            check_if_ready_to_start()
     else:
         emit('con_request',{'Con':'No','id':None})
 

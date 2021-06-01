@@ -1,13 +1,6 @@
 class Board():
     def __init__(self):
-        self.board = [[" " for i in range(16)] for j in range(16)]
-        self.board_check=[[" " for i in range(15)] for j in range(15)]
-        for i in range(1,16):
-            self.board[0][i]=i
-        i=1
-        for A in range(ord('A'),ord('O')+1):
-            self.board[i][0]=chr(A)
-            i=i+1
+        self.board=[[" " for i in range(15)] for j in range(15)]
 
         self.add_premium_squares()
 
@@ -24,13 +17,13 @@ class Board():
         (8, 2), (8, 6), (8, 8), (8, 12), (11, 0), (11, 7), (11, 14), (12, 6), (12, 8), (14, 3), (14, 11))
 
         for coordinate in TRIPLE_WORD_SCORE:
-            self.board_check[coordinate[0]][coordinate[1]] = "TWS"
+            self.board[coordinate[0]][coordinate[1]] = "TWS"
         for coordinate in TRIPLE_LETTER_SCORE:
-            self.board_check[coordinate[0]][coordinate[1]] = "TLS"
+            self.board[coordinate[0]][coordinate[1]] = "TLS"
         for coordinate in DOUBLE_WORD_SCORE:
-            self.board_check[coordinate[0]][coordinate[1]] = "DWS"
+            self.board[coordinate[0]][coordinate[1]] = "DWS"
         for coordinate in DOUBLE_LETTER_SCORE:
-            self.board_check[coordinate[0]][coordinate[1]] = "DLS"
+            self.board[coordinate[0]][coordinate[1]] = "DLS"
 
     def getBoard(self):
         res=[ y for x in self.board for y in x]

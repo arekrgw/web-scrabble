@@ -18,13 +18,10 @@ def joined():
     if can_connect:
         player=User(request.sid, request.args.get('name'))
         player_list.append(player)
-        send_data()
+        accept()
         check_if_ready_to_start()
     else:
-        emit('lobby_reject', {'data':'lobby jest pełne'},room=request.sid)
-
-
-
+        reject()
 
 
 
@@ -37,6 +34,11 @@ def check_if_ready_to_start():
         can_connect=False
 
 
+def accept():
+    emit('connection', {'data': 'Success'})
+    send_data()
+def reject():
+    emit('connection', {'data': 'Rejected'})
 
 def send_data():
     lobby_list=[]

@@ -1,12 +1,9 @@
 import uuid
 
 class User():
-    def __init__(self,connection_id, name,id):
+    def __init__(self,connection_id, name):
         self.user_id=connection_id
-        if id==None:
-            self.id=uuid.uuid4().hex
-        else:
-            self.id=id
+        self.id=uuid.uuid4().hex
         self.name=name
         self.score=0
         self.letters=[]

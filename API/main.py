@@ -1,7 +1,7 @@
 from User import *
 from Board import *
 from Game import *
-from flask import Flask, render_template, request, session
+from flask import Flask, request, session
 from flask_socketio import SocketIO, emit, send
 import uuid
 
@@ -18,27 +18,42 @@ game = Game()
 
 @socketio.on('connect')
 def joined():
-    if game.getConnected_players()<4:
-        player=User(request.sid, request.args.get('name'), request.args.get('id'))
-        if(game.getGameStatus()==True):
-            for i in player_list:
-                if i.getID()==player.getID():
-                    player=i
-                    game.Connected_player()
-            else:
-                emit('con_request',{'Con':'No','id':None})
-                return
-        else:
-            player_list.append(player)
-            game.Connected_player()
-        emit('con_request',{'Con':'Yes','id':player.getID()},room=player.getUserID())
+    connectingUserId = request.args.get('id')
+    player = None
+    # find existing player
+    for plr in player_list:
+        if plr.id == connectingUserId:
+            player = plr
+            player.sid = request.sid
+
+    if not player and game.getConnected_players() < 2 and not game.getGameStatus():
+        # new player to connect to lobby
+        player = User(request.sid, request.args.get('name'))
+        player_list.append(player)
+        emit('conn', {'conn': True, 'skipToGame': False, 'id': player.getID()}, room=request.sid)
+        game.Connected_player()
         send_data()
-        if game.getGameStatus()==False:
-            check_if_ready_to_start()
-    else:
-        emit('con_request',{'Con':'No','id':None})
+        check_if_ready_to_start()
+        return
 
+    elif player:
+        # player already on the list - reconnect him
+        emit('conn', {'conn': True, 'skipToGame': game.getGameStatus(), 'id': connectingUserId}, room=request.sid)
+        send_data()
+        return
 
+    emit('conn', {'conn': False}, room=request.sid)
+
+@socketio.on('disconnect')
+def dc():
+    print("sid", request.sid)
+    for plr in player_list:
+        print("found")
+        if plr.user_id == request.sid:
+            player_list.remove(plr)
+            game.DisconnectPlayer()
+            break
+    send_data()
 
 
 def game_status():
@@ -54,19 +69,12 @@ def check_if_ready_to_start():
         game_status()
 
 
-
-
-
-
 def send_data():
 
     lobby_list=[]
     for i in player_list:
         lobby_list.append(i.getName())
     emit('lobby', {'current':len(player_list),'players': lobby_list, 'max': 4}, broadcast=True)
-
-
-
 
 
 if __name__ == '__main__':

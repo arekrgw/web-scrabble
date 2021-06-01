@@ -1,5 +1,7 @@
 export const SERVER_URL = '127.0.0.1:5000';
 
+export const LS_ID = 'user_id';
+
 export const LETTERS = {
   a: { letter: 'a', points: 1 },
   b: { letter: 'b', points: 3 },

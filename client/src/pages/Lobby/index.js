@@ -39,17 +39,19 @@ const Lobby = () => {
           ))}
         </Flex>
         <Flex mt="7">
-          <Text
-            fontSize="xl"
-            fontWeight="bold"
-            color={
-              playersInLobby.current === playersInLobby.max
-                ? 'green.500'
-                : 'red'
-            }
-          >
-            {playersInLobby.current}/{playersInLobby.max}
-          </Text>
+          {playersInLobby && (
+            <Text
+              fontSize="xl"
+              fontWeight="bold"
+              color={
+                playersInLobby.current === playersInLobby.max
+                  ? 'green.500'
+                  : 'red'
+              }
+            >
+              {playersInLobby.current}/{playersInLobby.max}
+            </Text>
+          )}
         </Flex>
         <Text>Gra rozpocznie się automatycznie</Text>
       </Flex>

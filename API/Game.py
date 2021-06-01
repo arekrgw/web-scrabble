@@ -18,8 +18,11 @@ class Game():
     def Connected_player(self):
         self.connected_player=self.connected_player+1
 
+    def DisconnectPlayer(self):
+        self.connected_player=self.connected_player-1
+
     def setGameStart(self):
-        self.game_status=True;
+        self.game_status=True
 
     def getGameStatus(self):
         return self.game_status

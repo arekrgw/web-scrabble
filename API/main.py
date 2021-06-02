@@ -3,10 +3,14 @@ from Board import *
 from Game import *
 from flask import Flask, request, session
 from flask_socketio import SocketIO, emit, send
+#remember to
+#pip install flask-login
+from flask_login import LoginManager, UserMixin, login_user, current_user
 import uuid
 
 
 
+login_manager = LoginManager()
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
@@ -16,19 +20,31 @@ player_list=[]
 board = Board()
 game = Game()
 
+@login_manager.user_loader
+def load_user(user_id):
+    user = User(request.sid, request.args.get('name'))
+    return user
+
+
 @socketio.on('connect')
 def joined():
-    connectingUserId = request.args.get('id')
+    '''
+    connectinguserid brał id usera z poprzedniego logowania teraz
+    pamieta id ale nie pamięta nazwy
+    ale imo to feature nie bug bo mozesz na jednym id zmienic nazwe jak chcesz ale
+    :return:
+    '''
+    connectingUser = load_user(request.values.get('id'))
+
     player = None
     # find existing player
     for plr in player_list:
-        if plr.id == connectingUserId:
+        if plr.id == connectingUser.id:
             player = plr
             player.sid = request.sid
 
-    if not player and game.getConnected_players() < 2 and not game.getGameStatus():
-        # new player to connect to lobby
-        player = User(request.sid, request.args.get('name'))
+    if not player and not game.getGameStatus():
+        player = connectingUser
         player_list.append(player)
         emit('conn', {'conn': True, 'skipToGame': False, 'id': player.getID()}, room=request.sid)
         game.Connected_player()
@@ -38,7 +54,7 @@ def joined():
 
     elif player:
         # player already on the list - reconnect him
-        emit('conn', {'conn': True, 'skipToGame': game.getGameStatus(), 'id': connectingUserId}, room=request.sid)
+        emit('conn', {'conn': True, 'skipToGame': game.getGameStatus(), 'id': connectingUser}, room=request.sid)
         send_data()
         return
 
@@ -78,4 +94,5 @@ def send_data():
 
 
 if __name__ == '__main__':
+    login_manager.init_app(app)
     socketio.run(app,port=5000,host='0.0.0.0')

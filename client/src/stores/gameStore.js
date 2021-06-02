@@ -3,6 +3,7 @@ import { io } from 'socket.io-client';
 import { SERVER_URL } from '../__app/constants';
 import { routes } from '../__app/routes';
 import { LS_ID } from '../__app/constants';
+import { matchPath } from 'react-router-dom';
 
 export class GameStore {
   socketHandler = null;
@@ -25,24 +26,34 @@ export class GameStore {
       },
       reconnection: false,
     });
-    this.socketHandler.on('lobby', this.lobbyHandler);
     this.socketHandler.on('conn', this.afterConnectHandler);
+    this.socketHandler.on('lobby', this.lobbyHandler);
+    this.socketHandler.on('game_status', this.handleGameStatus);
     this.socketHandler.on('disconnect', this.afterDisconnectHandler);
-    this.socketHandler.on('check', this.afterCheck);
+    this.socketHandler.on('board_update', this.boardUpdate);
+    this.socketHandler.on('letter_update', this.letterUpdate);
+    this.socketHandler.on('scoreboard', this.scoreboardHandler);
   };
 
-
-    afterCheck = (msg) => {
-    console.log(msg);
+  boardUpdate = (msg) => {
+    console.log('board_update', msg);
   };
+
+  letterUpdate = (msg) => {
+    console.log('letter_update', msg);
+  };
+
+  scoreboardHandler = (msg) => {
+    console.log('scoreboard', msg);
+  };
+
   afterConnectHandler = ({ conn, id, skipToGame }) => {
-  console.log(id);
+    console.log(id);
     if (conn) {
       localStorage.setItem(LS_ID, id);
       if (skipToGame) {
-        // something
-        console.log('go to game');
-        return
+        this.switchToGame();
+        return;
       }
       this.parent.routerStore.push(routes.lobby);
       return;
@@ -62,7 +73,7 @@ export class GameStore {
     this.playersInLobby = msg;
   };
 
-  afterDisconnectHandler = (msg) => {
+  afterDisconnectHandler = () => {
     console.log('dc');
     this.socketHandler?.close();
     this.clearStore();
@@ -74,6 +85,24 @@ export class GameStore {
       duration: 8000,
       isClosable: true,
     });
+  };
+
+  handleGameStatus = (msg) => {
+    if (msg.status === 'start') {
+      this.switchToGame();
+    } else {
+      // end game show scoreboard
+    }
+  };
+
+  switchToGame = () => {
+    if (
+      !matchPath(this.parent.routerStore.location.pathname, {
+        path: routes.game,
+        exact: true,
+      })
+    )
+      this.parent.routerStore.push(routes.game);
   };
 
   clearStore = () => {

@@ -1,6 +1,5 @@
-export const fieldsData = new Array(15)
-  .fill('')
-  .map((ele) => Array(15).fill(''));
+export const fieldsData = new Array(15).fill('').map(() => Array(15).fill(''));
+
 const TWS = [
   [0, 0],
   [7, 0],
@@ -11,6 +10,7 @@ const TWS = [
   [7, 14],
   [14, 14],
 ];
+
 const DWS = [
   [1, 1],
   [2, 2],
@@ -29,6 +29,7 @@ const DWS = [
   [11, 11],
   [10, 10],
 ];
+
 const TLS = [
   [1, 5],
   [1, 9],
@@ -43,6 +44,7 @@ const TLS = [
   [13, 5],
   [13, 9],
 ];
+
 const DLS = [
   [0, 3],
   [0, 11],
@@ -70,20 +72,18 @@ const DLS = [
   [14, 11],
 ];
 
-console.log(TWS);
-
-TWS.map((cords) => {
+TWS.forEach((cords) => {
   fieldsData[cords[0]][cords[1]] = 'POTRÓJNA PREMIA SŁOWNA';
 });
 
-DWS.map((cords) => {
+DWS.forEach((cords) => {
   fieldsData[cords[0]][cords[1]] = 'PODWÓJNA PREMIA SŁOWNA';
 });
 
-TLS.map((cords) => {
+TLS.forEach((cords) => {
   fieldsData[cords[0]][cords[1]] = 'POTRÓJNA PREMIA LITEROWA';
 });
 
-DLS.map((cords) => {
+DLS.forEach((cords) => {
   fieldsData[cords[0]][cords[1]] = 'POTRÓJNA PREMIA LITEROWA';
 });

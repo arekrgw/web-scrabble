@@ -3,14 +3,7 @@ from Board import *
 from Game import *
 from flask import Flask, request, session
 from flask_socketio import SocketIO, emit, send
-#remember to
-#pip install flask-login
-from flask_login import LoginManager, UserMixin, login_user, current_user
-import uuid
 
-
-
-login_manager = LoginManager()
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
@@ -36,7 +29,6 @@ def joined():
         if plr.getID() == connectingUserid:
             player = plr
             player.setUserID(request.sid)
-            send_data()
 
     if not player and not game.getGameStatus():
         player = User(request.sid, request.args.get('name'))
@@ -69,15 +61,15 @@ def dc():
     else:
         for plr in player_list:
             if plr.getUserID() == request.sid:
-                player.setDisconnected()
+                plr.setDisconnected()
                 break
 
 
 def game_status():
     if(game.game_status==True):
-        emit('game_status', {'data': 'start'}, broadcast=True)
+        emit('game_status', {'status': 'start'}, broadcast=True)
     else:
-        emit('game_status', {'data': 'end'}, broadcast=True)
+        emit('game_status', {'status': 'end'}, broadcast=True)
 
 
 def check_if_ready_to_start():
@@ -95,5 +87,4 @@ def send_data():
 
 
 if __name__ == '__main__':
-    login_manager.init_app(app)
     socketio.run(app,port=5000,host='0.0.0.0')

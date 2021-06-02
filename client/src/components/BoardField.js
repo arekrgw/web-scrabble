@@ -4,11 +4,10 @@ import { useTheme } from '@chakra-ui/system';
 const STYLES = {
   normalField: {
     borderRadius: '7px',
-    box: '60px',
+    box: 'calc((100vh - 100px - 28px) / 15)', // 100px for header/podstawke/legende na klocki, 28px gap w gridzie, 15 ilosc klockow
     fontSize: '11px',
     corner: '1',
     pointstype: 'sm',
-    margin: '2px',
   },
   TWS: {
     background: '#ff4d4d',
@@ -41,7 +40,6 @@ const BoardField = ({ premium, text, onClick, type, ...rest }) => {
       height={STYLES[type].box}
       justifyContent="center"
       alignItems="center"
-      margin={STYLES[type].margin}
       onClick={() => (onClick ? onClick({ text }) : null)}
       {...rest}
     >

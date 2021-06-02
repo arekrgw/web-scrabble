@@ -20,11 +20,6 @@ player_list=[]
 board = Board()
 game = Game()
 
-@login_manager.user_loader
-def load_user(user_id):
-    user = User(request.sid, request.args.get('name'))
-    return user
-
 
 @socketio.on('connect')
 def joined():
@@ -34,17 +29,17 @@ def joined():
     ale imo to feature nie bug bo mozesz na jednym id zmienic nazwe jak chcesz ale
     :return:
     '''
-    connectingUser = load_user(request.values.get('id'))
-
+    connectingUserid = request.values.get('id')
     player = None
     # find existing player
     for plr in player_list:
-        if plr.id == connectingUser.id:
+        if plr.getID() == connectingUserid:
             player = plr
-            player.sid = request.sid
+            player.setUserID(request.sid)
+            send_data()
 
     if not player and not game.getGameStatus():
-        player = connectingUser
+        player = User(request.sid, request.args.get('name'))
         player_list.append(player)
         emit('conn', {'conn': True, 'skipToGame': False, 'id': player.getID()}, room=request.sid)
         game.Connected_player()
@@ -54,7 +49,7 @@ def joined():
 
     elif player:
         # player already on the list - reconnect him
-        emit('conn', {'conn': True, 'skipToGame': game.getGameStatus(), 'id': connectingUser}, room=request.sid)
+        emit('conn', {'conn': True, 'skipToGame': game.getGameStatus(), 'id': connectingUserid}, room=request.sid)
         send_data()
         return
 
@@ -62,14 +57,20 @@ def joined():
 
 @socketio.on('disconnect')
 def dc():
-    print("sid", request.sid)
-    for plr in player_list:
-        print("found")
-        if plr.user_id == request.sid:
-            player_list.remove(plr)
-            game.DisconnectPlayer()
-            break
-    send_data()
+    if game.getGameStatus()==False:
+        print("sid", request.sid)
+        for plr in player_list:
+            print("found")
+            if plr.user_id == request.sid:
+                player_list.remove(plr)
+                game.DisconnectPlayer()
+                break
+        send_data()
+    else:
+        for plr in player_list:
+            if plr.getUserID() == request.sid:
+                player.setDisconnected()
+                break
 
 
 def game_status():

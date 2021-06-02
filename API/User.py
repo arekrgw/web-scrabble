@@ -7,10 +7,13 @@ class User():
         self.name=name
         self.score=0
         self.letters=[]
-        self.player_connected=False
+        self.player_connected=True
 
     def getUserID(self):
         return self.user_id
+
+    def setUserID(self,sid):
+        self.user_id=sid
 
     def getID(self):
         return self.id

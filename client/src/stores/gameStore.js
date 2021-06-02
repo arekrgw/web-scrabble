@@ -28,9 +28,15 @@ export class GameStore {
     this.socketHandler.on('lobby', this.lobbyHandler);
     this.socketHandler.on('conn', this.afterConnectHandler);
     this.socketHandler.on('disconnect', this.afterDisconnectHandler);
+    this.socketHandler.on('check', this.afterCheck);
   };
 
+
+    afterCheck = (msg) => {
+    console.log(msg);
+  };
   afterConnectHandler = ({ conn, id, skipToGame }) => {
+  console.log(id);
     if (conn) {
       localStorage.setItem(LS_ID, id);
       if (skipToGame) {

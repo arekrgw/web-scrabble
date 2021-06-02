@@ -13,8 +13,8 @@ const SIZES = {
   game: {
     borderWidth: '3px',
     borderRadius: '7px',
-    box: '45px',
-    fontSize: '2xl',
+    box: '60px',
+    fontSize: '5xl',
     corner: '1',
     pointsSize: 'sm',
   },
@@ -39,8 +39,13 @@ const LetterTile = ({ letter, points, onClick, size, ...rest }) => {
       boxShadow="base"
       {...rest}
     >
-      <Text fontSize={SIZES[size].fontSize} lineHeight="100%" fontWeight="bold">
-        {letter.toUpperCase()}
+      <Text
+        fontSize={SIZES[size].fontSize}
+        lineHeight="100%"
+        fontWeight="bold"
+        align="center"
+      >
+        {letter && letter.toUpperCase()}
       </Text>
       <Text
         position="absolute"

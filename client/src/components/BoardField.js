@@ -24,7 +24,7 @@ const STYLES = {
   },
 };
 
-const BoardField = ({ premium, text, points, onClick, type, ...rest }) => {
+const BoardField = ({ premium, text, onClick, type, ...rest }) => {
   const theme = useTheme();
 
   return (
@@ -42,9 +42,7 @@ const BoardField = ({ premium, text, points, onClick, type, ...rest }) => {
       justifyContent="center"
       alignItems="center"
       margin={STYLES[type].margin}
-      onClick={() => (onClick ? onClick({ text, points }) : null)}
-      borderLeft={`${STYLES[type].borderWidth} solid ${theme.colors.tileBorder}`}
-      boxShadow="base"
+      onClick={() => (onClick ? onClick({ text }) : null)}
       {...rest}
     >
       <Text
@@ -54,15 +52,6 @@ const BoardField = ({ premium, text, points, onClick, type, ...rest }) => {
         align="center"
       >
         {text && text.toUpperCase()}
-      </Text>
-      <Text
-        position="absolute"
-        lineHeight="100%"
-        right={STYLES[type].corner}
-        bottom={STYLES[type].corner}
-        fonttype={STYLES[type].pointstype}
-      >
-        {points}
       </Text>
     </Flex>
   );

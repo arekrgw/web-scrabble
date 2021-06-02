@@ -1,7 +1,7 @@
 export const fieldsData = new Array(15)
   .fill('')
   .map((ele) => Array(15).fill(''));
-let TWS = [
+const TWS = [
   [0, 0],
   [7, 0],
   [14, 0],
@@ -11,7 +11,7 @@ let TWS = [
   [7, 14],
   [14, 14],
 ];
-let DWS = [
+const DWS = [
   [1, 1],
   [2, 2],
   [3, 3],
@@ -29,7 +29,7 @@ let DWS = [
   [11, 11],
   [10, 10],
 ];
-let TLS = [
+const TLS = [
   [1, 5],
   [1, 9],
   [5, 1],
@@ -43,7 +43,7 @@ let TLS = [
   [13, 5],
   [13, 9],
 ];
-let DLS = [
+const DLS = [
   [0, 3],
   [0, 11],
   [2, 6],

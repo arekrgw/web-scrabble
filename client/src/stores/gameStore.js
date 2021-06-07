@@ -4,12 +4,16 @@ import { SERVER_URL } from '../__app/constants';
 import { routes } from '../__app/routes';
 import { LS_ID } from '../__app/constants';
 import { matchPath } from 'react-router-dom';
+import { fieldsData } from '../__app/constants';
 
 export class GameStore {
   socketHandler = null;
   playerName = '';
   parent = null;
   playersInLobby = null;
+  playersScoreboard = [];
+  playersLetters = [];
+  mergedTilesArray = fieldsData;
 
   constructor(parent) {
     makeAutoObservable(this);
@@ -109,5 +113,7 @@ export class GameStore {
     this.socketHandler = null;
     this.playersInLobby = null;
     this.playerName = '';
+    this.playersScoreboard = [];
+    this.playersLetters = [];
   };
 }

@@ -12,7 +12,7 @@ export class GameStore {
   parent = null;
   playersInLobby = null;
   playersScoreboard = [];
-  playersLetters = [];
+  playersLetters = ['k', 'l', 'k', 'l', 'k', 'l', 'w'];
   mergedTilesArray = fieldsData;
 
   constructor(parent) {
@@ -45,6 +45,7 @@ export class GameStore {
 
   letterUpdate = (msg) => {
     console.log('letter_update', msg);
+    this.playersLetters = msg.current;
   };
 
   scoreboardHandler = (msg) => {

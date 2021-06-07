@@ -10,13 +10,18 @@ const SIZES = {
     corner: '2',
     pointsSize: 'lg',
   },
+  sheet: {
+    borderWidth: '5px',
+    borderRadius: '15px',
+    box: '60px',
+    fontSize: '3xl',
+    corner: '2',
+    pointsSize: 'md',
+  },
   game: {
     borderWidth: '3px',
     borderRadius: '7px',
-    box: 'calc((100vh - 100px - 28px) / 15)',
-    fontSize: 'calc((100vh - 100px - 28px) / 15 * 0.6) ',
-    corner: '1',
-    pointsSize: 'xs',
+    corner: '3px',
   },
 };
 
@@ -39,7 +44,15 @@ const PREMIUM = {
   },
 };
 
-const LetterTile = ({ letter, points, premium, onClick, size, ...rest }) => {
+const LetterTile = ({
+  letter,
+  points,
+  premium,
+  onClick,
+  size,
+  responsiveBox,
+  ...rest
+}) => {
   const theme = useTheme();
 
   return (
@@ -54,8 +67,8 @@ const LetterTile = ({ letter, points, premium, onClick, size, ...rest }) => {
           : theme.colors.blankTileBackground
       }
       position="relative"
-      width={SIZES[size].box}
-      height={SIZES[size].box}
+      width={SIZES[size].box || responsiveBox}
+      height={SIZES[size].box || responsiveBox}
       justifyContent="center"
       alignItems="center"
       borderLeft={`${SIZES[size].borderWidth} solid ${
@@ -82,7 +95,7 @@ const LetterTile = ({ letter, points, premium, onClick, size, ...rest }) => {
       {letter && points && (
         <>
           <Text
-            fontSize={SIZES[size].fontSize}
+            fontSize={SIZES[size].fontSize || `calc(${responsiveBox} * 0.6)`}
             lineHeight="100%"
             fontWeight="bold"
             align="center"
@@ -94,7 +107,7 @@ const LetterTile = ({ letter, points, premium, onClick, size, ...rest }) => {
             lineHeight="100%"
             right={SIZES[size].corner}
             bottom={SIZES[size].corner}
-            fontSize={SIZES[size].pointsSize}
+            fontSize={SIZES[size].pointsSize || `calc(${responsiveBox} * 0.34)`}
           >
             {points}
           </Text>

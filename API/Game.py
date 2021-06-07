@@ -12,6 +12,18 @@ class Game():
                 return True
         return False
 
+    def checkPos(self,pos, word, direction):
+        l=len(word)
+        if direction=='vertical':
+            if pos[0]+len>15:
+                return False
+        else:
+            if pos[1]+len>15:
+                return False
+        return True
+
+
+
     def getConnected_players(self):
         return self.connected_player
 

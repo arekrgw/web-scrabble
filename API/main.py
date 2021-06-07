@@ -1,3 +1,5 @@
+import time
+
 from User import *
 from Board import *
 from Game import *
@@ -36,6 +38,8 @@ def joined():
         game.Connected_player()
         send_data()
 
+        #Testowanie board_update
+        board_update(player)
 
         check_if_ready_to_start()
         return
@@ -86,6 +90,13 @@ def send_data():
         lobby_list.append(i.getName())
     emit('lobby', {'current':len(player_list),'players': lobby_list, 'max': 4}, broadcast=True)
 
+def board_update(next_player):
+    players_info = []
+    for i in player_list:
+        players_info.append((i.getName(), i.getScore()))
+    print(players_info)
+    emit('board_update', {'board': board.getBoardArray(), 'score': players_info, 'turn': next_player.getName(), 'timeForTurn': 30})
+
 
 @socketio.on('send_word')
 def recive(word_recived,direction_recived,pos_recived):
@@ -93,8 +104,6 @@ def recive(word_recived,direction_recived,pos_recived):
         word=word_recived
         direction=direction_recived
         pos=pos_recived
-
-
 
 
 def game_loop():
@@ -107,6 +116,7 @@ def game_loop():
         for i in player_list:
             turn = i.getUserID()
             # board update tura gracza i
+            #board_update(i)
             time.sleep(10)
             if(word==None):
                 continue

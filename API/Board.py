@@ -30,3 +30,5 @@ class Board():
         ','.join(map(str, res))
         return res
 
+    def getBoardArray(self):
+        return self.board

@@ -16,12 +16,6 @@ game = Game()
 
 @socketio.on('connect')
 def joined():
-    '''
-    connectinguserid brał id usera z poprzedniego logowania teraz
-    pamieta id ale nie pamięta nazwy
-    ale imo to feature nie bug bo mozesz na jednym id zmienic nazwe jak chcesz ale
-    :return:
-    '''
     connectingUserid = request.values.get('id')
     player = None
     # find existing player
@@ -79,11 +73,27 @@ def check_if_ready_to_start():
 
 
 def send_data():
-
     lobby_list=[]
     for i in player_list:
         lobby_list.append(i.getName())
     emit('lobby', {'current':len(player_list),'players': lobby_list, 'max': 4}, broadcast=True)
+
+
+def game_loop():
+    #wygeneruj litery
+    while game.getGameStatus():
+        for i in player_list:
+            # borad update tura gracza i
+            data=request.values.get('data',timeout=30,room=i.getUserID())
+            flag=game.checkWord(data[0])
+            if flag:
+                flag=game.checkPos(data[2],data[0],data[1])
+            if flag:
+                # punkty
+                # naniesienie na plansze
+            #losowanie liter
+            #jak za mało to koniec gry
+
 
 
 if __name__ == '__main__':

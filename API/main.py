@@ -31,10 +31,13 @@ def joined():
         emit('conn', {'conn': True, 'skipToGame': False, 'id': player.getID()}, room=request.sid)
         game.Connected_player()
         send_data()
+
+
         check_if_ready_to_start()
         return
 
     elif player:
+
         # player already on the list - reconnect him
         emit('conn', {'conn': True, 'skipToGame': game.getGameStatus(), 'id': connectingUserid}, room=request.sid)
         send_data()
@@ -106,8 +109,8 @@ def game_loop():
 
 def generate_letters(num,player):
     letters = player.letters
-    for i in num:
-        letters.append(game.random_letter)
+    for i in range(0,num):
+        letters.append(game.random_letter())
     return letters
     # emit('letter_update',)
 

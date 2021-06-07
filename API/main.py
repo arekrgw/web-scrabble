@@ -12,6 +12,10 @@ can_connect = True
 player_list=[]
 board = Board()
 game = Game()
+turn = None
+word = None
+pos = None
+direction = None
 
 
 @socketio.on('connect')
@@ -83,6 +87,15 @@ def send_data():
     emit('lobby', {'current':len(player_list),'players': lobby_list, 'max': 4}, broadcast=True)
 
 
+@socketio.on('send_word')
+def recive(word_recived,direction_recived,pos_recived):
+    if request.sid==turn:
+        word=word_recived
+        direction=direction_recived
+        pos=pos_recived
+
+
+
 
 def game_loop():
     #wygeneruj litery
@@ -92,18 +105,22 @@ def game_loop():
 
     while game.getGameStatus():
         for i in player_list:
-            # borad update tura gracza i
-            
-            
-            data=request.values.get('data',timeout=30,room=i.getUserID())
-            flag=game.checkWord(data[0])
+            turn = i.getUserID()
+            # board update tura gracza i
+            time.sleep(10)
+            if(word==None):
+                continue
+            flag=game.checkWord(word)
             if flag:
-                flag=game.checkPos(data[2],data[0],data[1])
+                flag=game.checkPos(pos,word,direction)
             # if flag:
                 # punkty
                 # naniesienie na plansze
             #losowanie liter
             #jak za mało to koniec gry
+            word=None
+            direction=None
+            pos=None
 
 
 

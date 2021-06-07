@@ -9,14 +9,14 @@ import { observer } from 'mobx-react-lite';
 
 const GamePage = () => {
   const {
-    gameStore: { mergedTilesArray },
+    gameStore: { mergedTilesArray, handleTileClick },
   } = useStore();
   const height = useWindowHeight();
-  const boxSize = `calc((100vh - ${height * 0.20}px - 48px) / 15)`;
+  const boxSize = `calc((100vh - ${height * 0.2}px - 48px) / 15)`;
 
   return (
     <Grid
-      templateColumns="15% auto 1fr"
+      templateColumns="15% min-content 1fr"
       templateRows="auto 1fr"
       w="100%"
       h="100vh"
@@ -42,7 +42,7 @@ const GamePage = () => {
                 coords={{ x, y }}
                 tile={tile}
                 responsiveBox={boxSize}
-                onClick={(coords) => console.log(coords)}
+                onClick={handleTileClick}
               />
             )),
           )}
@@ -55,7 +55,7 @@ const GamePage = () => {
       <GridItem colStart="3" colSpan="1" rowStart="1" rowSpan="1">
         <RightPanel />
       </GridItem>
-      <GridItem rowStart="2" rowSpan="1" colStart="1" colSpan="2">
+      <GridItem rowStart="2" rowSpan="1" colStart="1" colSpan="3">
         <BottomSheet />
       </GridItem>
     </Grid>

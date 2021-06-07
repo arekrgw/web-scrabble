@@ -14,6 +14,7 @@ export class GameStore {
   playersScoreboard = [];
   playersLetters = ['k', 'l', 'k', 'l', 'k', 'l', 'w'];
   mergedTilesArray = fieldsData;
+  focusedTile = null;
 
   constructor(parent) {
     makeAutoObservable(this);
@@ -108,6 +109,14 @@ export class GameStore {
       })
     )
       this.parent.routerStore.push(routes.game);
+  };
+
+  handleTileClick = (coords) => {
+    if (coords.x === this.focusedTile?.x && coords.y === this.focusedTile?.y) {
+      this.focusedTile = null;
+      return;
+    }
+    this.focusedTile = coords;
   };
 
   clearStore = () => {

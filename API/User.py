@@ -6,7 +6,7 @@ class User():
         self.id=uuid.uuid4().hex
         self.name=name
         self.score=0
-        self.letters=[]
+        self.letters= []
         self.player_connected=True
 
     def getUserID(self):

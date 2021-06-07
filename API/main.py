@@ -83,9 +83,15 @@ def send_data():
 
 def game_loop():
     #wygeneruj litery
+    for player in player_list:
+        player.letters = generate_letters(7,player)
+        emit('letter_update',{'current':player.letters},room=player.getUserID())
+
     while game.getGameStatus():
         for i in player_list:
             # borad update tura gracza i
+            
+            
             data=request.values.get('data',timeout=30,room=i.getUserID())
             flag=game.checkWord(data[0])
             if flag:
@@ -98,11 +104,12 @@ def game_loop():
 
 
 
-def generate_letters(self,num):
-    letters = []
+def generate_letters(num,player):
+    letters = player.letters
     for i in num:
-        letters[i] = random_letter
-    emit()
+        letters.append(game.random_letter)
+    return letters
+    # emit('letter_update',)
 
 
 if __name__ == '__main__':

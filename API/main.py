@@ -16,6 +16,7 @@ game = Game()
 
 @socketio.on('connect')
 def joined():
+
     connectingUserid = request.values.get('id')
     player = None
     # find existing player
@@ -79,6 +80,7 @@ def send_data():
     emit('lobby', {'current':len(player_list),'players': lobby_list, 'max': 4}, broadcast=True)
 
 
+
 def game_loop():
     #wygeneruj litery
     while game.getGameStatus():
@@ -88,12 +90,19 @@ def game_loop():
             flag=game.checkWord(data[0])
             if flag:
                 flag=game.checkPos(data[2],data[0],data[1])
-            if flag:
+            # if flag:
                 # punkty
                 # naniesienie na plansze
             #losowanie liter
             #jak za mało to koniec gry
 
+
+
+def generate_letters(self,num):
+    letters = []
+    for i in num:
+        letters[i] = random_letter
+    emit()
 
 
 if __name__ == '__main__':

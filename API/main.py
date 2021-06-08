@@ -5,7 +5,12 @@ from Board import *
 from Game import *
 from flask import Flask, request, session
 from flask_socketio import SocketIO, emit, send
-import threading
+from flaskthreads import AppContextThread
+from flask import copy_current_request_context
+
+import eventlet
+eventlet.monkey_patch()
+
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
@@ -73,15 +78,10 @@ def game_status():
 
 
 def check_if_ready_to_start():
-    if game.getConnected_players()==4:
+    if game.getConnected_players()==2:
         game.setGameStart()
         game_status()
-
-        for player in player_list:
-            player.letters = generate_letters(7, player)
-            emit('letter_update', {'current': player.letters}, room=player.getUserID())
-        x = threading.Thread(target=game_loop).start()
-        #game_loop()
+        eventlet.spawn(game_loop)
 
 
 
@@ -96,12 +96,12 @@ def board_update(next_player):
     for i in player_list:
         players_info.append((i.getName(), i.getScore()))
     print(players_info)
-    emit('board_update', {'board': board.getBoardArray(), 'score': players_info, 'turn': next_player.getName(), 'timeForTurn': 30})
+    socketio.emit('board_update', {'board': board.getBoardArray(), 'score': players_info, 'turn': next_player.getName(), 'timeForTurn': 30})
 
 
 @socketio.on('send_word')
 def recive(word,direction,pos):
-    if request.sid==turn:
+    if request.sid==turn.getUserID():
         flag = game.checkWord(word)
         if flag:
             flag = game.checkPos(pos, word, direction)
@@ -111,15 +111,22 @@ def recive(word,direction,pos):
             # losowanie liter
             # jak za mało to koniec gry
 
-
 def game_loop():
+    letters()
     while game.getGameStatus():
         for i in player_list:
-            turn = i.getUserID()
-            # board update tura gracza i
-            #board_update(i)
-            #time.sleep(10)
-    #send score board
+            turn = i
+            board_update(i)
+            eventlet.sleep(15)
+    # send score board
+
+
+def letters():
+    for player in player_list:
+        player.letters = generate_letters(7, player)
+        socketio.emit('letter_update', {'current': player.letters}, room=player.getUserID())
+
+
 
 
 
@@ -130,7 +137,6 @@ def generate_letters(num,player):
     for i in range(0,num):
         letters.append(game.random_letter())
     return letters
-    # emit('letter_update',)
 
 
 if __name__ == '__main__':

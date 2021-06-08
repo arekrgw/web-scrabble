@@ -109,7 +109,7 @@ const DLS = [
 
 TWS.forEach((cords) => {
   fieldsData[cords[0]][cords[1]] = {
-    letter: 'k',
+    letter: null,
     premium: 'TWS',
   };
 });

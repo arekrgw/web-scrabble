@@ -1,4 +1,4 @@
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, runInAction } from 'mobx';
 import { io } from 'socket.io-client';
 import { SERVER_URL } from '../__app/constants';
 import { routes } from '../__app/routes';
@@ -12,9 +12,12 @@ export class GameStore {
   parent = null;
   playersInLobby = null;
   playersScoreboard = [];
-  playersLetters = ['k', 'l', 'k', 'l', 'k', 'l', 'w'];
+  playersLetters = [];
   mergedTilesArray = fieldsData;
   focusedTile = null;
+  currentPlayerTurn = null;
+  timeForTurn = 0;
+  intervalHandler = null;
 
   constructor(parent) {
     makeAutoObservable(this);
@@ -42,6 +45,10 @@ export class GameStore {
 
   boardUpdate = (msg) => {
     console.log('board_update', msg);
+    this.currentPlayerTurn = msg.turn;
+    this.playersScoreboard = msg.score;
+    this.timeForTurn = msg.timeForTurn;
+    this.runTimer();
   };
 
   letterUpdate = (msg) => {
@@ -53,8 +60,18 @@ export class GameStore {
     console.log('scoreboard', msg);
   };
 
+  runTimer = async () => {
+    clearInterval(this.intervalHandler);
+    if (this.timeForTurn !== 0) {
+      this.intervalHandler = setInterval(() => {
+        runInAction(() => {
+          if (this.timeForTurn) this.timeForTurn -= 1;
+        });
+      }, 1000);
+    }
+  };
+
   afterConnectHandler = ({ conn, id, skipToGame }) => {
-    console.log(id);
     if (conn) {
       localStorage.setItem(LS_ID, id);
       if (skipToGame) {
@@ -125,5 +142,10 @@ export class GameStore {
     this.playerName = '';
     this.playersScoreboard = [];
     this.playersLetters = [];
+    this.mergedTilesArray = fieldsData;
+    this.focusedTile = null;
+    this.currentPlayerTurn = null;
+    this.timeForTurn = 0;
+    clearInterval(this.intervalHandler);
   };
 }

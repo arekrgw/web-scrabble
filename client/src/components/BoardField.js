@@ -8,7 +8,7 @@ const BoardField = ({ onClick, tile, coords, responsiveBox, ...rest }) => {
   const {
     gameStore: { focusedTile },
   } = useStore();
-  console.log(tile);
+
   return (
     <GridItem
       onClick={() => (onClick ? onClick(coords) : null)}

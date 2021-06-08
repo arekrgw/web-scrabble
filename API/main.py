@@ -7,6 +7,7 @@ from flask import Flask, request, session
 from flask_socketio import SocketIO, emit, send
 from flaskthreads import AppContextThread
 from flask import copy_current_request_context
+from constants import MAX_PLAYERS, TURN_TIME
 
 import eventlet
 eventlet.monkey_patch()
@@ -78,7 +79,7 @@ def game_status():
 
 
 def check_if_ready_to_start():
-    if game.getConnected_players()==2:
+    if game.getConnected_players()==MAX_PLAYERS:
         game.setGameStart()
         game_status()
         eventlet.spawn(game_loop)
@@ -89,14 +90,14 @@ def send_data():
     lobby_list=[]
     for i in player_list:
         lobby_list.append(i.getName())
-    emit('lobby', {'current':len(player_list),'players': lobby_list, 'max': 4}, broadcast=True)
+    emit('lobby', {'current':len(player_list),'players': lobby_list, 'max': MAX_PLAYERS}, broadcast=True)
 
 def board_update(next_player):
     players_info = []
     for i in player_list:
         players_info.append((i.getName(), i.getScore()))
     print(players_info)
-    socketio.emit('board_update', {'board': board.getBoardArray(), 'score': players_info, 'turn': next_player.getName(), 'timeForTurn': 30})
+    socketio.emit('board_update', {'board': board.getBoardArray(), 'score': players_info, 'turn': next_player.getName(), 'timeForTurn': TURN_TIME})
 
 
 @socketio.on('send_word')
@@ -117,7 +118,7 @@ def game_loop():
         for i in player_list:
             turn = i
             board_update(i)
-            eventlet.sleep(15)
+            eventlet.sleep(TURN_TIME)
     # send score board
 
 

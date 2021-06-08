@@ -5,7 +5,7 @@ from Board import *
 from Game import *
 from flask import Flask, request, session
 from flask_socketio import SocketIO, emit, send
-
+import threading
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
@@ -34,9 +34,6 @@ def joined():
         emit('conn', {'conn': True, 'skipToGame': False, 'id': player.getID()}, room=request.sid)
         game.Connected_player()
         send_data()
-
-        #Testowanie board_update
-        board_update(player)
 
         check_if_ready_to_start()
         return
@@ -79,6 +76,9 @@ def check_if_ready_to_start():
     if game.getConnected_players()==4:
         game.setGameStart()
         game_status()
+        #x = threading.Thread(target=game_loop).start()
+        game_loop()
+
 
 
 def send_data():
@@ -113,12 +113,12 @@ def game_loop():
         player.letters = generate_letters(7,player)
         emit('letter_update',{'current':player.letters},room=player.getUserID())
 
-    while game.getGameStatus():
-        for i in player_list:
-            turn = i.getUserID()
+    #while game.getGameStatus():
+        #for i in player_list:
+            #turn = i.getUserID()
             # board update tura gracza i
             #board_update(i)
-            time.sleep(10)
+            #time.sleep(10)
     #send score board
 
 

@@ -76,8 +76,12 @@ def check_if_ready_to_start():
     if game.getConnected_players()==4:
         game.setGameStart()
         game_status()
-        #x = threading.Thread(target=game_loop).start()
-        game_loop()
+
+        for player in player_list:
+            player.letters = generate_letters(7, player)
+            emit('letter_update', {'current': player.letters}, room=player.getUserID())
+        x = threading.Thread(target=game_loop).start()
+        #game_loop()
 
 
 
@@ -109,13 +113,9 @@ def recive(word,direction,pos):
 
 
 def game_loop():
-    for player in player_list:
-        player.letters = generate_letters(7,player)
-        emit('letter_update',{'current':player.letters},room=player.getUserID())
-
-    #while game.getGameStatus():
-        #for i in player_list:
-            #turn = i.getUserID()
+    while game.getGameStatus():
+        for i in player_list:
+            turn = i.getUserID()
             # board update tura gracza i
             #board_update(i)
             #time.sleep(10)

@@ -34,4 +34,6 @@ class User():
         self.player_connected=True
     def setDisconnected(self):
         self.player_connected=False
+    def setScore(self,score):
+        self.score=self.score+score
 

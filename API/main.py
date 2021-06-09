@@ -47,6 +47,10 @@ def joined():
         # player already on the list - reconnect him
         emit('conn', {'conn': True, 'skipToGame': game.getGameStatus(), 'id': connectingUserid}, room=request.sid)
         send_data()
+
+        letters_update()
+        board_update(turn)
+
         return
 
     emit('conn', {'conn': False}, room=request.sid)
@@ -106,11 +110,14 @@ def recive(word,direction,pos):
         flag = game.checkWord(word)
         if flag:
             flag = game.checkPos(pos, word, direction)
-        # if flag:
-            # punkty
-            # naniesienie na plansze
+        if flag:
+            score = board.countPoints(word,pos,direction)
+            turn.setScore(score)
+            board.saveWord(word,pos,direction)
             # losowanie liter
             # jak za mało to koniec gry
+
+
 
 def game_loop():
     # wygeneruj litery
@@ -137,6 +144,10 @@ def game_loop():
         for i in player_list:
             turn = i
             board_update(i)
+            letters_update()
+            score = board.countPoints('word',pos,'vertical') #test
+            board.saveWord('word',pos,'vertical') #test
+            i.setScore(score) #test
             eventlet.sleep(TURN_TIME)
     # send score board
 
@@ -144,6 +155,10 @@ def game_loop():
 def letters():
     for player in player_list:
         player.letters = generate_letters(7, player)
+        socketio.emit('letter_update', {'current': player.letters}, room=player.getUserID())
+
+def letters_update():
+    for player in player_list:
         socketio.emit('letter_update', {'current': player.letters}, room=player.getUserID())
 
 

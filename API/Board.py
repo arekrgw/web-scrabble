@@ -108,3 +108,32 @@ class Board():
                 score=score+temp
         #nie wiem jak dziala mnoznik za cale slowa
         return score
+
+    def checkWordOnBoard(self,pos,direction):
+        if direction=='vertical':
+            if pos[0]!=0:
+                if self.board[pos[0]-1][pos[1]]!=' ':
+                    return False
+        else:
+            if pos[1]!=0:
+                if self.board[pos[0]][pos[1]-1]:
+                    return False
+        return True
+
+    def getNewLetters(seld,pos,word,direction):
+        l=len(word)
+        i=0
+        if direction=='vertical':
+            i=pos[0]
+            while self.board[i][pos[1]]!="":
+                i=i+1
+        if l<=i-pos[0]:
+            return None
+        else:
+            i=pos[1]
+            while self.board[pos[0]][i]!="":
+                i=i+1
+        if l<=i-pos[i]:
+            return None
+        res = word[i:]
+        return res

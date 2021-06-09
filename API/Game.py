@@ -51,11 +51,13 @@ class Game():
 
     def checkPos(self,pos, word, direction):
         l=len(word)
+        y=pos[0]
+        x=pos[1]
         if direction=='vertical':
-            if pos[0]+len>15:
+            if pos[0]+l>15:
                 return False
         else:
-            if pos[1]+len>15:
+            if pos[1]+l>15:
                 return False
         return True
 

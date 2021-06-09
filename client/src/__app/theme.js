@@ -4,6 +4,8 @@ export const theme = extendTheme({
   colors: {
     primary: '#000000',
     tileBackground: '#e2d38e',
-    tileBorder: '#c1b57c'
+    blankTileBackground: '#dbd6be',
+    tileBorder: '#c1b57c',
+    blankTileBorder: '#dbd6be'
   }
 });

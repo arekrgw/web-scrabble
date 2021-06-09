@@ -1,15 +1,23 @@
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, runInAction } from 'mobx';
 import { io } from 'socket.io-client';
 import { SERVER_URL } from '../__app/constants';
 import { routes } from '../__app/routes';
 import { LS_ID } from '../__app/constants';
 import { matchPath } from 'react-router-dom';
+import { fieldsData } from '../__app/constants';
 
 export class GameStore {
   socketHandler = null;
   playerName = '';
   parent = null;
   playersInLobby = null;
+  playersScoreboard = [];
+  playersLetters = [];
+  mergedTilesArray = fieldsData;
+  focusedTile = null;
+  currentPlayerTurn = null;
+  timeForTurn = 0;
+  intervalHandler = null;
 
   constructor(parent) {
     makeAutoObservable(this);
@@ -37,18 +45,33 @@ export class GameStore {
 
   boardUpdate = (msg) => {
     console.log('board_update', msg);
+    this.currentPlayerTurn = msg.turn;
+    this.playersScoreboard = msg.score;
+    this.timeForTurn = msg.timeForTurn;
+    this.runTimer();
   };
 
   letterUpdate = (msg) => {
     console.log('letter_update', msg);
+    this.playersLetters = msg.current;
   };
 
   scoreboardHandler = (msg) => {
     console.log('scoreboard', msg);
   };
 
+  runTimer = async () => {
+    clearInterval(this.intervalHandler);
+    if (this.timeForTurn !== 0) {
+      this.intervalHandler = setInterval(() => {
+        runInAction(() => {
+          if (this.timeForTurn) this.timeForTurn -= 1;
+        });
+      }, 1000);
+    }
+  };
+
   afterConnectHandler = ({ conn, id, skipToGame }) => {
-    console.log(id);
     if (conn) {
       localStorage.setItem(LS_ID, id);
       if (skipToGame) {
@@ -105,9 +128,24 @@ export class GameStore {
       this.parent.routerStore.push(routes.game);
   };
 
+  handleTileClick = (coords) => {
+    if (coords.x === this.focusedTile?.x && coords.y === this.focusedTile?.y) {
+      this.focusedTile = null;
+      return;
+    }
+    this.focusedTile = coords;
+  };
+
   clearStore = () => {
     this.socketHandler = null;
     this.playersInLobby = null;
     this.playerName = '';
+    this.playersScoreboard = [];
+    this.playersLetters = [];
+    this.mergedTilesArray = fieldsData;
+    this.focusedTile = null;
+    this.currentPlayerTurn = null;
+    this.timeForTurn = 0;
+    clearInterval(this.intervalHandler);
   };
 }

@@ -125,6 +125,7 @@ def game_loop():
         for i in player_list:
             turn = i
             board_update(i)
+            letters_update()
             score = board.countPoints('word',pos,'vertical') #test
             board.saveWord('word',pos,'vertical') #test
             i.setScore(score) #test

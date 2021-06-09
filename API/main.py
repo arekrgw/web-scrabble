@@ -7,16 +7,14 @@ from flask_socketio import SocketIO, emit, send
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
-
 can_connect = True
-player_list=[]
+player_list = []
 board = Board()
 game = Game()
 
 
 @socketio.on('connect')
 def joined():
-
     connectingUserid = request.values.get('id')
     player = None
     # find existing player
@@ -32,7 +30,6 @@ def joined():
         game.Connected_player()
         send_data()
 
-
         check_if_ready_to_start()
         return
 
@@ -45,9 +42,10 @@ def joined():
 
     emit('conn', {'conn': False}, room=request.sid)
 
+
 @socketio.on('disconnect')
 def dc():
-    if game.getGameStatus()==False:
+    if game.getGameStatus() == False:
         print("sid", request.sid)
         for plr in player_list:
             print("found")
@@ -64,56 +62,60 @@ def dc():
 
 
 def game_status():
-    if(game.game_status==True):
+    if (game.game_status == True):
         emit('game_status', {'status': 'start'}, broadcast=True)
     else:
         emit('game_status', {'status': 'end'}, broadcast=True)
 
 
 def check_if_ready_to_start():
-    if game.getConnected_players()==4:
+    if game.getConnected_players() == 4:
         game.setGameStart()
         game_status()
 
 
 def send_data():
-    lobby_list=[]
+    lobby_list = []
     for i in player_list:
         lobby_list.append(i.getName())
-    emit('lobby', {'current':len(player_list),'players': lobby_list, 'max': 4}, broadcast=True)
-
+    emit('lobby', {'current': len(player_list), 'players': lobby_list, 'max': 4}, broadcast=True)
 
 
 def game_loop():
-    #wygeneruj litery
+    # wygeneruj litery
     for player in player_list:
-        player.letters = generate_letters(7,player)
-        emit('letter_update',{'current':player.letters},room=player.getUserID())
+        player.letters = generate_letters(7, player)
+        emit('letter_update', {'current': player.letters}, room=player.getUserID())
 
     while game.getGameStatus():
         for i in player_list:
             # borad update tura gracza i
-            
-            
-            data=request.values.get('data',timeout=30,room=i.getUserID())
-            flag=game.checkWord(data[0])
+
+            data = request.values.get('data', timeout=30, room=i.getUserID())
+            flag = game.checkWord(data[0])
             if flag:
-                flag=game.checkPos(data[2],data[0],data[1])
+                flag = game.checkPos(data[2], data[0], data[1])
             # if flag:
-                # punkty
-                # naniesienie na plansze
-            #losowanie liter
-            #jak za mało to koniec gry
+            # punkty
+            # naniesienie na plansze
+            # losowanie liter
+            # jak za mało to koniec gry
 
 
-
-def generate_letters(num,player):
+def generate_letters(num, player):
     letters = player.letters
-    for i in range(0,num):
+    for i in range(0, num):
         letters.append(game.random_letter())
     return letters
     # emit('letter_update',)
 
 
+@socketio.on('send_word')
+def subtract_letters(word):
+    return
+
+
+
+
 if __name__ == '__main__':
-    socketio.run(app,port=5000,host='0.0.0.0')
+    socketio.run(app, port=5000, host='0.0.0.0')

@@ -18,11 +18,16 @@ export class GameStore {
   currentPlayerTurn = null;
   timeForTurn = 0;
   intervalHandler = null;
+  direction = 'horizontal';
 
   constructor(parent) {
     makeAutoObservable(this);
     this.parent = parent;
   }
+
+  setDirection = (dir) => {
+    this.direction = dir;
+  };
 
   initConnection = (playerName) => {
     this.playerName = playerName;
@@ -46,9 +51,26 @@ export class GameStore {
   boardUpdate = (msg) => {
     console.log('board_update', msg);
     this.currentPlayerTurn = msg.turn;
+    this.unFocusTile();
     this.playersScoreboard = msg.score;
     this.timeForTurn = msg.timeForTurn;
+    this.refreshBoard(msg.board);
     this.runTimer();
+  };
+
+  refreshBoard = (board) => {
+    board.forEach((row, y) => {
+      row.forEach((field, x) => {
+        if (field) {
+          runInAction(() => {
+            this.mergedTilesArray[y][x] = {
+              ...this.mergedTilesArray[y][x],
+              letter: field.toLowerCase(),
+            };
+          });
+        }
+      });
+    });
   };
 
   letterUpdate = (msg) => {
@@ -129,11 +151,31 @@ export class GameStore {
   };
 
   handleTileClick = (coords) => {
+    if (this.playerName !== this.currentPlayerTurn) {
+      this.unFocusTile();
+      return;
+    }
+
     if (coords.x === this.focusedTile?.x && coords.y === this.focusedTile?.y) {
       this.focusedTile = null;
       return;
     }
     this.focusedTile = coords;
+  };
+
+  unFocusTile = () => {
+    this.focusedTile = null;
+  };
+
+  sendWord = (value) => {
+    const reqBody = {
+      word: value,
+      direction: this.direction,
+      pos: [this.focusedTile.x, this.focusedTile.y],
+    };
+
+    this.socketHandler.emit('send_word', reqBody);
+    console.log('send_word', reqBody);
   };
 
   clearStore = () => {

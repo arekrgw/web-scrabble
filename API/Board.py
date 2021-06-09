@@ -1,6 +1,6 @@
 class Board():
     def __init__(self):
-        self.board=[[" " for i in range(15)] for j in range(15)]
+        self.board=[["" for i in range(15)] for j in range(15)]
 
         self.TRIPLE_WORD_SCORE = ((0, 0), (7, 0), (14, 0), (0, 7), (14, 7), (0, 14), (7, 14), (14, 14))
         self.DOUBLE_WORD_SCORE = (

@@ -121,20 +121,28 @@ class Board():
         return True
 
     def getNewLetters(self,pos,word,direction):
-        #To trzeba napisać od nowa
         l=len(word)
+        already_on_board=0
+        list = []
         i=0
         if direction=='vertical':
             i=pos[0]
-            while self.board[i][pos[1]]!="":
+            for a in word:
+                if self.board[i][pos[1]]==a:
+                    already_on_board=already_on_board+1
+                else:
+                    list.append(a)
                 i=i+1
-        if l<=i-pos[0]:
-            return None
+            if l==already_on_board:
+                return None
         else:
             i=pos[1]
-            while self.board[pos[0]][i]!="":
+            for a in word:
+                if self.board[pos[0]][i]==a:
+                    already_on_board=already_on_board+1
+                else:
+                    list.append(a)
                 i=i+1
-        if l<=i-pos[i]:
-            return None
-        res = word[i:]
-        return res
+            if l==already_on_board:
+                return None
+        return list

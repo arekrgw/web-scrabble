@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import {
   Input,
   Flex,
@@ -12,27 +12,20 @@ import { useStore } from '../stores';
 import { observer } from 'mobx-react-lite';
 
 const WordEnter = () => {
-  const [value, setValue] = useState('');
   const {
     gameStore: {
       focusedTile,
-      unFocusTile,
       sendWord,
       playerName,
       currentPlayerTurn,
+      wordEnterValue,
+      setWordEnterValue,
     },
   } = useStore();
 
   useEffect(() => {
-    if (!focusedTile) setValue('');
-  }, [focusedTile]);
-
-  const handleSubmit = () => {
-    if (!focusedTile || !value) return;
-    sendWord(value);
-    setValue('');
-    unFocusTile();
-  };
+    if (!focusedTile) setWordEnterValue('');
+  }, [focusedTile, setWordEnterValue]);
 
   const inputStatus = () => {
     if (playerName !== currentPlayerTurn)
@@ -51,9 +44,9 @@ const WordEnter = () => {
           _hover={{ borderColor: 'green.500' }}
           focusBorderColor="green.600"
           size="lg"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          onKeyPress={(e) => e.key === 'Enter' && handleSubmit()}
+          value={wordEnterValue}
+          onChange={(e) => setWordEnterValue(e.target.value)}
+          onKeyPress={(e) => e.key === 'Enter' && sendWord()}
           {...inputStatus()}
         />
         <InputRightElement h="100%" p="1px">
@@ -62,7 +55,7 @@ const WordEnter = () => {
             h="100%"
             disabled={!focusedTile}
             variant="ghost"
-            onClick={handleSubmit}
+            onClick={sendWord}
             colorScheme="green"
             outline={false}
             _focus={{ boxShadow: 'none' }}

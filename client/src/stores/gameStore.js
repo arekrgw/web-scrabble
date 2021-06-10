@@ -19,6 +19,10 @@ export class GameStore {
   timeForTurn = 0;
   intervalHandler = null;
   direction = 'horizontal';
+  isErrorModalOpen = true;
+  modalTimeoutHandler = null;
+  errorModalContent = '';
+  wordEnterValue = '';
 
   constructor(parent) {
     makeAutoObservable(this);
@@ -28,6 +32,10 @@ export class GameStore {
   setDirection = (dir) => {
     this.direction = dir;
   };
+
+  setWordEnterValue = (value) => {
+    this.wordEnterValue = value;
+  }
 
   initConnection = (playerName) => {
     this.playerName = playerName;
@@ -46,16 +54,36 @@ export class GameStore {
     this.socketHandler.on('board_update', this.boardUpdate);
     this.socketHandler.on('letter_update', this.letterUpdate);
     this.socketHandler.on('scoreboard', this.scoreboardHandler);
+    this.socketHandler.on('wrong_word', this.errorHandler);
   };
 
   boardUpdate = (msg) => {
     console.log('board_update', msg);
     this.currentPlayerTurn = msg.turn;
     this.unFocusTile();
+    this.setWordEnterValue('');
     this.playersScoreboard = msg.score;
     this.timeForTurn = msg.timeForTurn;
     this.refreshBoard(msg.board);
     this.runTimer();
+  };
+
+  manuallyCloseModal = () => {
+    clearTimeout(this.modalTimeoutHandler);
+    this.isErrorModalOpen = false;
+  }
+
+  errorHandler = (msg) => {
+    console.log('wrong_word', msg);
+    if (this.modalTimeoutHandler) clearTimeout(this.modalTimeoutHandler);
+    this.errorModalContent = msg.data;
+    this.isErrorModalOpen = true;
+
+    this.modalTimeoutHandler = setTimeout(() => {
+      runInAction(() => {
+        this.isErrorModalOpen = false;
+      });
+    }, 2000);
   };
 
   refreshBoard = (board) => {
@@ -167,9 +195,10 @@ export class GameStore {
     this.focusedTile = null;
   };
 
-  sendWord = (value) => {
+  sendWord = () => {
+    if (!this.focusedTile || !this.wordEnterValue) return;
     const reqBody = {
-      word: value,
+      word: this.wordEnterValue,
       direction: this.direction,
       pos: [this.focusedTile.y, this.focusedTile.x],
     };

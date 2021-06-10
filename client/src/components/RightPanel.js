@@ -22,7 +22,7 @@ const RightPanel = () => {
 
         {playersScoreboard
           .slice()
-          .sort((a, b) => a[1] - b[1])
+          .sort((a, b) => b[1] - a[1])
           .map((plr, idx) => (
             <Flex justifyContent="center" key={plr[0]}>
               <Text fontSize="2xl" fontWeight="bold">

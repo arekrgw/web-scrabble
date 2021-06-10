@@ -117,15 +117,22 @@ def recive(msg):
             flag = board.checkWordOnBoard(msg['pos'],msg['direction'])
         print('pos passed')
         if flag:
+            used_letters=board.getNewLetters(msg['pos'], msg['word'], msg['direction'])
+            if used_letters==None:
+                flag=False
+            print(used_letters)
+            # used letters to litery do odjęcia
+        if flag:
             end_turn=True
             print('tutaj')
-            #used_letters=board.getNewLetters(msg['pos'], msg['word'], msg['direction'])
-            # used letters to litery do odjęcia
+            
             score = board.countPoints(msg['word'],msg['pos'],msg['direction']) 
             board.saveWord(msg['word'],msg['pos'],msg['direction']) 
             turn.setScore(score) 
             # losowanie liter
             # jak za mało to koniec gry
+        else:
+            emit('wrong_word',{'data':'Something went wrong'}, room=request.sid)
 
 
 

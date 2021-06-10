@@ -46,3 +46,11 @@ class User():
                 return False
         return True
 
+    def removeUsedLetters(self, usedLetters):
+        for i in usedLetters:
+            if i in self.letters:
+                self.letters.remove(i)
+            else:
+                return False
+        return True
+

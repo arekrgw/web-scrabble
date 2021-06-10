@@ -131,8 +131,9 @@ def recive(msg):
             
             score = board.countPoints(msg['word'],msg['pos'],msg['direction']) 
             board.saveWord(msg['word'],msg['pos'],msg['direction']) 
-            turn.setScore(score) 
-            # losowanie liter
+            turn.setScore(score)
+            turn.removeUsedLetters(used_letters)
+            generate_letters(len(used_letters), turn)
             # jak za mało to koniec gry
         else:
             print("Invalid word.")
@@ -180,7 +181,7 @@ def generate_letters(num,player):
     for i in range(0, num):
         while True: #Dodałem while bo jakby trafiło literę której nie może dać to by generowało mniej niż trzeba
             letter = game.random_letter()
-            if letters_cout.is_letter_avilable(letter):
+            if not letters_cout.is_letter_avilable(letter):
                 letters.append(game.random_letter())
                 break
     return letters

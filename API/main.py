@@ -19,6 +19,7 @@ can_connect = True
 player_list = []
 board = Board()
 game = Game()
+letters_cout = Letters_cout()
 turn = None
 
 
@@ -105,21 +106,35 @@ def board_update(next_player):
 
 
 @socketio.on('send_word')
-def recive(word,direction,pos):
+def recive(msg):
+    print(msg) # msg to {'word': 'asdas', 'direction': 'horizontal', 'pos': [7, 7]}
     if request.sid==turn.getUserID():
-        flag = game.checkWord(word)
+        flag = game.checkWord(msg['word'])
         if flag:
-            flag = game.checkPos(pos, word, direction)
+            flag = game.checkPos(msg['pos'], msg['word'], msg['direction'])
         if flag:
-            score = board.countPoints(word,pos,direction)
-            turn.setScore(score)
-            board.saveWord(word,pos,direction)
+            flag = board.checkWordOnBoard(msg['pos'],msg['direction'])
+        if flag:
+            print('tutaj')
+            #used_letters=board.getNewLetters(msg['pos'], msg['word'], msg['direction'])
+            # used letters to litery do odjęcia
+            score = board.countPoints(msg['word'],msg['pos'],msg['direction']) 
+            board.saveWord(msg['word'],msg['pos'],msg['direction']) 
+            turn.setScore(score) 
             # losowanie liter
             # jak za mało to koniec gry
 
 
 
 def game_loop():
+
+    #inicjalizowanie liczb liter
+
+
+    letters_cout.display_amount() #test
+    letters_cout.decrease_letter('a') #test
+    letters_cout.display_amount() #test
+
     # wygeneruj litery
     for player in player_list:
         player.letters = generate_letters(7, player)
@@ -139,15 +154,19 @@ def game_loop():
             # losowanie liter
             # jak za mało to koniec gry
 
-    letters()
+    #letters()
+    global turn
+    prepared_letters()
     while game.getGameStatus():
         for i in player_list:
             turn = i
+            
+            score = board.countPoints('word',[2, 2],'vertical') #test
+            board.saveWord('word',[2, 2],'vertical') #test
+            i.setScore(score) #test
+
             board_update(i)
             letters_update()
-            score = board.countPoints('word',pos,'vertical') #test
-            board.saveWord('word',pos,'vertical') #test
-            i.setScore(score) #test
             eventlet.sleep(TURN_TIME)
     # send score board
 
@@ -164,10 +183,20 @@ def letters_update():
 
 
 
-def generate_letters(num, player):
+
+
+def prepared_letters():
+    for i in player_list:
+        i.letters=['j','a','k','t','o','a','a']
+
+
+
+def generate_letters(num,player):
     letters = player.letters
     for i in range(0, num):
-        letters.append(game.random_letter())
+        letter = game.random_letter()
+        if letters_cout.is_letter_avilable(letter):
+            letters.append(game.random_letter())
     return letters
 
 

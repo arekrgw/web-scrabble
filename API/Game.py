@@ -1,4 +1,51 @@
 import random
+
+class  Letters_cout():
+
+    def __init__(self):
+        self.game_letters_amount = {
+            "a": 10,
+            "e": 7,
+            "i": 2,
+            "o": 3,
+            "u": 3,
+            "l": 3,
+            "n": 2,
+            "s": 1,
+            "t": 4,
+            "r": 3,
+            "d": 5,
+            "g": 2,
+            "b": 4,
+            "c": 2,
+            "m": 3,
+            "p": 2,
+            "f": 4,
+            "h": 3,
+            "v": 1,
+            "w": 2,
+            "y": 4,
+            "k": 3,
+            "j": 3,
+            "x": 1,
+            "q": 1,
+            "z": 3,
+        }
+
+
+    def is_letter_avilable(self,key):
+        if(self.game_letters_amount[key] == 0):
+            return True
+        return False
+
+    def display_amount(self):
+        '''for debuging purposes'''
+        for key, value in self.game_letters_amount.items():
+            print(key , " " , value)
+
+    def decrease_letter(self,key):
+        self.game_letters_amount[key] = self.game_letters_amount[key] - 1
+
 class Game():
 
     game_letters = {
@@ -51,11 +98,13 @@ class Game():
 
     def checkPos(self,pos, word, direction):
         l=len(word)
+        y=pos[0]
+        x=pos[1]
         if direction=='vertical':
-            if pos[0]+len>15:
+            if pos[0]+l>15:
                 return False
         else:
-            if pos[1]+len>15:
+            if pos[1]+l>15:
                 return False
         return True
 

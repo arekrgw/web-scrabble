@@ -162,7 +162,7 @@ def recive(msg):
             elif bug==3:
                 emit('wrong_word',{'data':'Starting position incorrect'}, room=request.sid)
             elif bug==4:
-                emit('wrong_word',{'data':'Inccorect word'}, room=request.sid)
+                emit('wrong_word',{'data':'Inccorect word or position'}, room=request.sid)
             elif bug==5:
                 emit('wrong_word',{'data':'Used wrong letters'}, room=request.sid)
             else:

@@ -171,7 +171,7 @@ export class GameStore {
     const reqBody = {
       word: value,
       direction: this.direction,
-      pos: [this.focusedTile.x, this.focusedTile.y],
+      pos: [this.focusedTile.y, this.focusedTile.x],
     };
 
     this.socketHandler.emit('send_word', reqBody);

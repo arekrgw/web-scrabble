@@ -120,7 +120,7 @@ def recive(msg):
             used_letters=board.getNewLetters(msg['pos'], msg['word'], msg['direction'])
             if used_letters==None:
                 flag=False
-            if not turn.checkUsedLetters(used_letters):
+            if not turn.checkUsedLetters(used_letters) and flag:
                 flag = False
                 print("Player doesn't have the letters used.")
             print(used_letters)

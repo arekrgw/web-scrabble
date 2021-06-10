@@ -21,7 +21,7 @@ board = Board()
 game = Game()
 letters_cout = Letters_cout()
 turn = None
-
+end_turn = False
 
 @socketio.on('connect')
 def joined():
@@ -107,6 +107,7 @@ def board_update(next_player):
 
 @socketio.on('send_word')
 def recive(msg):
+    global end_turn
     print(msg) # msg to {'word': 'asdas', 'direction': 'horizontal', 'pos': [7, 7]}
     if request.sid==turn.getUserID():
         flag = game.checkWord(msg['word'])
@@ -114,7 +115,9 @@ def recive(msg):
             flag = game.checkPos(msg['pos'], msg['word'], msg['direction'])
         if flag:
             flag = board.checkWordOnBoard(msg['pos'],msg['direction'])
+        print('pos passed')
         if flag:
+            end_turn=True
             print('tutaj')
             #used_letters=board.getNewLetters(msg['pos'], msg['word'], msg['direction'])
             # used letters to litery do odjęcia
@@ -128,26 +131,21 @@ def recive(msg):
 
 def game_loop():
 
-    #inicjalizowanie liczb liter
-
-    letters_cout.display_amount() #test
-    letters_cout.decrease_letter('a') #test
-    letters_cout.display_amount() #test
-
     #letters()
     global turn
+    global end_turn
     prepared_letters()
     while game.getGameStatus():
         for i in player_list:
             turn = i
 
-            score = board.countPoints('word',[2, 2],'vertical') #test
-            board.saveWord('word',[2, 2],'vertical') #test
-            i.setScore(score) #test
-
             board_update(i)
             letters_update()
-            eventlet.sleep(TURN_TIME)
+            for i in range (0,TURN_TIME):
+                eventlet.sleep(1)
+                if end_turn==True:
+                    end_turn=False
+                    break
     # send score board
 
 
@@ -180,9 +178,6 @@ def generate_letters(num,player):
     return letters
 
 
-@socketio.on('send_word')
-def subtract_letters(word):
-    return
 
 
 

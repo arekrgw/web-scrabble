@@ -24,11 +24,11 @@ const RightPanel = () => {
           .slice()
           .sort((a, b) => a[0] - b[0])
           .map((plr, idx) => (
-            <Flex justifyContent="center">
+            <Flex justifyContent="center" key={plr[0]}>
               <Text fontSize="2xl" fontWeight="bold">
                 {idx + 1}.&nbsp;
               </Text>
-              <Text fontSize="2xl" key={plr[0]}>
+              <Text fontSize="2xl">
                 {plr[0]} {plr[1]} pkt.
               </Text>
             </Flex>

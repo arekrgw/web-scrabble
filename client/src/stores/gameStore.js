@@ -19,7 +19,7 @@ export class GameStore {
   timeForTurn = 0;
   intervalHandler = null;
   direction = 'horizontal';
-  isErrorModalOpen = true;
+  isErrorModalOpen = false;
   modalTimeoutHandler = null;
   errorModalContent = '';
   wordEnterValue = '';

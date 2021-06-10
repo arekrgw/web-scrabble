@@ -144,6 +144,8 @@ class Board():
             for a in word:
                 if self.board[i][pos[1]]==a:
                     already_on_board=already_on_board+1
+                elif self.board[i][pos[1]]!='':
+                    return None
                 else:
                     list.append(a)
                 i=i+1
@@ -154,6 +156,8 @@ class Board():
             for a in word:
                 if self.board[pos[0]][i]==a:
                     already_on_board=already_on_board+1
+                elif self.board[pos[0]][i]!='':
+                    return None
                 else:
                     list.append(a)
                 i=i+1

@@ -112,15 +112,16 @@ class Board():
     def checkWordOnBoard(self,pos,direction):
         if direction=='vertical':
             if pos[0]!=0:
-                if self.board[pos[0]-1][pos[1]]!=' ':
+                if self.board[pos[0]-1][pos[1]]!='':
                     return False
         else:
             if pos[1]!=0:
-                if self.board[pos[0]][pos[1]-1]:
+                if self.board[pos[0]][pos[1]-1]!='':
                     return False
         return True
 
-    def getNewLetters(seld,pos,word,direction):
+    def getNewLetters(self,pos,word,direction):
+        #To trzeba napisać od nowa
         l=len(word)
         i=0
         if direction=='vertical':

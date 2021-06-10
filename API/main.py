@@ -178,9 +178,11 @@ def prepared_letters():
 def generate_letters(num,player):
     letters = player.letters
     for i in range(0, num):
-        letter = game.random_letter()
-        if letters_cout.is_letter_avilable(letter):
-            letters.append(game.random_letter())
+        while True: #Dodałem while bo jakby trafiło literę której nie może dać to by generowało mniej niż trzeba
+            letter = game.random_letter()
+            if letters_cout.is_letter_avilable(letter):
+                letters.append(game.random_letter())
+                break
     return letters
 
 

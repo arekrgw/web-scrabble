@@ -1,3 +1,6 @@
+from flask.scaffold import F
+
+
 class Board():
     def __init__(self):
         self.board=[["" for i in range(15)] for j in range(15)]
@@ -124,6 +127,7 @@ class Board():
         return score
 
     def checkWordOnBoard(self,pos,direction):
+        
         if direction=='vertical':
             if pos[0]!=0:
                 if self.board[pos[0]-1][pos[1]]!='':
@@ -168,3 +172,23 @@ class Board():
             if already_on_board==0  and self.board_empty==False:
                 return None
         return list
+    
+    def firstWord(self, pos, word, direction):
+        if self.board_empty==False:
+            return True
+        if direction=='vertical':
+            if pos[1]!=7:
+                return False
+            if pos[0]>7:
+                return False
+            if pos[0]+len(word)<7:
+                 return False
+        else:
+            if pos[0]!=7:
+                return False
+            if pos[1]>7:
+                return False
+            if pos[1]+len(word)<7:
+                 return False
+        self.board_empty=False
+        return True

@@ -108,27 +108,42 @@ def board_update(next_player):
 @socketio.on('send_word')
 def recive(msg):
     global end_turn
+    bug=0
     print(msg) # msg to {'word': 'asdas', 'direction': 'horizontal', 'pos': [7, 7]}
     if request.sid==turn.getUserID():
         flag = game.checkWord(msg['word'])
         if flag:
             flag = game.checkPos(msg['pos'], msg['word'], msg['direction'])
+        else:
+            bug=1
+            
+
         if flag:
             flag = board.checkWordOnBoard(msg['pos'],msg['direction'])
-        print('pos passed')
+        else:
+            bug=2
+            
         if flag:
             used_letters=board.getNewLetters(msg['pos'], msg['word'], msg['direction'])
             if used_letters==None:
                 flag=False
-            if not turn.checkUsedLetters(used_letters) and flag:
-                flag = False
-                print("Player doesn't have the letters used.")
-            print(used_letters)
-            # used letters to litery do odjęcia
+        else:
+            bug=3
+            
+        if flag:
+                flag = turn.checkUsedLetters(used_letters)
+                print(used_letters)
+        else:
+            bug=4
+            
+        if flag:
+            flag=board.firstWord(msg['pos'], msg['word'], msg['direction'])
+        else:
+            bug=5
+            
         if flag:
             end_turn=True
             print('tutaj')
-            
             score = board.countPoints(msg['word'],msg['pos'],msg['direction']) 
             board.saveWord(msg['word'],msg['pos'],msg['direction']) 
             turn.setScore(score)
@@ -136,8 +151,18 @@ def recive(msg):
             generate_letters(len(used_letters), turn)
             # jak za mało to koniec gry
         else:
-            print("Invalid word.")
-            emit('wrong_word',{'data':'Something went wrong'}, room=request.sid)
+            if bug==1:
+                emit('wrong_word',{'data':'Word does not exist'}, room=request.sid)
+            elif bug==2:
+                emit('wrong_word',{'data':'Starting position incorrect'}, room=request.sid)
+            elif bug==3:
+                emit('wrong_word',{'data':'Starting position incorrect'}, room=request.sid)
+            elif bug==4:
+                emit('wrong_word',{'data':'Inccorect word'}, room=request.sid)
+            elif bug==5:
+                emit('wrong_word',{'data':'Used wrong letters'}, room=request.sid)
+            else:
+                emit('wrong_word',{'data':'First word must go through center'}, room=request.sid)
 
 
 

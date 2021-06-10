@@ -37,3 +37,12 @@ class User():
     def setScore(self,score):
         self.score=self.score+score
 
+    def checkUsedLetters(self, usedLetters):
+        currentLetters = self.letters.copy()
+        for i in usedLetters:
+            if i in currentLetters:
+                currentLetters.remove(i)
+            else:
+                return False
+        return True
+

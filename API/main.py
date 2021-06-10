@@ -120,6 +120,9 @@ def recive(msg):
             used_letters=board.getNewLetters(msg['pos'], msg['word'], msg['direction'])
             if used_letters==None:
                 flag=False
+            if not turn.checkUsedLetters(used_letters):
+                flag = False
+                print("Player doesn't have the letters used.")
             print(used_letters)
             # used letters to litery do odjęcia
         if flag:
@@ -132,6 +135,7 @@ def recive(msg):
             # losowanie liter
             # jak za mało to koniec gry
         else:
+            print("Invalid word.")
             emit('wrong_word',{'data':'Something went wrong'}, room=request.sid)
 
 
@@ -165,14 +169,9 @@ def letters_update():
     for player in player_list:
         socketio.emit('letter_update', {'current': player.letters}, room=player.getUserID())
 
-
-
-
-
-
 def prepared_letters():
     for i in player_list:
-        i.letters=['j','a','k','t','o','a','a']
+        i.letters=['o','a','k','t','o','r','d'] #doktor
 
 
 
@@ -190,4 +189,6 @@ def generate_letters(num,player):
 
 
 if __name__ == '__main__':
+    print("Starting server ...")
     socketio.run(app, port=5000, host='0.0.0.0')
+

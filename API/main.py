@@ -121,25 +121,29 @@ def recive(msg):
         if flag:
             flag = board.checkWordOnBoard(msg['pos'],msg['direction'])
         else:
-            bug=2
+            if bug==0:
+                bug=2
             
         if flag:
             used_letters=board.getNewLetters(msg['pos'], msg['word'], msg['direction'])
             if used_letters==None:
                 flag=False
         else:
-            bug=3
+            if bug==0:
+                bug=3
             
         if flag:
                 flag = turn.checkUsedLetters(used_letters)
                 print(used_letters)
         else:
-            bug=4
-            
+            if bug==0:
+                bug=4
+
         if flag:
             flag=board.firstWord(msg['pos'], msg['word'], msg['direction'])
         else:
-            bug=5
+            if bug==0:
+                bug=5
             
         if flag:
             end_turn=True

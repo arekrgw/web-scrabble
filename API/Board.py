@@ -12,7 +12,7 @@ class Board():
         (0, 3), (0, 11), (2, 6), (2, 8), (3, 0), (3, 7), (3, 14), (6, 2), (6, 6), (6, 8), (6, 12), (7, 3), (7, 11),
         (8, 2), (8, 6), (8, 8), (8, 12), (11, 0), (11, 7), (11, 14), (12, 6), (12, 8), (14, 3), (14, 11))
         #self.add_premium_squares()
-
+        self.board_empty = True
         self.game_letters = {
         "a": 1,
         "e": 1,
@@ -151,7 +151,7 @@ class Board():
                 i=i+1
             if l==already_on_board:
                 return None
-            if already_on_board==0:
+            if already_on_board==0 and self.board_empty==False:
                 return None
         else:
             i=pos[1]
@@ -165,6 +165,6 @@ class Board():
                 i=i+1
             if l==already_on_board:
                 return None
-            if already_on_board==0:
+            if already_on_board==0  and self.board_empty==False:
                 return None
         return list

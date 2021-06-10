@@ -84,6 +84,8 @@ class Board():
 
     def countPoints(self,word,pos,direction):
         score=0
+        x3=0
+        x2=0
         if direction=='vertical':
             i=pos[0]
             for a in word:
@@ -93,6 +95,10 @@ class Board():
                     temp=temp*3
                 if p in self.DOUBLE_LETTER_SCORE:
                     temp=temp*2
+                if p in self.DOUBLE_WORD_SCORE:
+                    x2=1
+                if p in self.TRIPLE_WORD_SCORE:
+                    x3=1
                 i=i+1
                 score=score+temp
         else:
@@ -104,9 +110,17 @@ class Board():
                     temp=temp*3
                 if p in self.DOUBLE_LETTER_SCORE:
                     temp=temp*2
+                if p in self.DOUBLE_WORD_SCORE:
+                    x2=1
+                if p in self.TRIPLE_WORD_SCORE:
+                    x3=1
                 i=i+1
                 score=score+temp
         #nie wiem jak dziala mnoznik za cale slowa
+        if x2==1:
+            score=score*2
+        if x3==1:
+            score=score*3
         return score
 
     def checkWordOnBoard(self,pos,direction):

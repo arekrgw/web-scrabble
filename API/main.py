@@ -130,29 +130,9 @@ def game_loop():
 
     #inicjalizowanie liczb liter
 
-
     letters_cout.display_amount() #test
     letters_cout.decrease_letter('a') #test
     letters_cout.display_amount() #test
-
-    # wygeneruj litery
-    for player in player_list:
-        player.letters = generate_letters(7, player)
-        emit('letter_update', {'current': player.letters}, room=player.getUserID())
-
-    while game.getGameStatus():
-        for i in player_list:
-            # borad update tura gracza i
-
-            data = request.values.get('data', timeout=30, room=i.getUserID())
-            flag = game.checkWord(data[0])
-            if flag:
-                flag = game.checkPos(data[2], data[0], data[1])
-            # if flag:
-            # punkty
-            # naniesienie na plansze
-            # losowanie liter
-            # jak za mało to koniec gry
 
     #letters()
     global turn
@@ -160,7 +140,7 @@ def game_loop():
     while game.getGameStatus():
         for i in player_list:
             turn = i
-            
+
             score = board.countPoints('word',[2, 2],'vertical') #test
             board.saveWord('word',[2, 2],'vertical') #test
             i.setScore(score) #test

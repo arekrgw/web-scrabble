@@ -41,7 +41,7 @@ const GamePage = () => {
         <AlertDialogContent>
           <AlertDialogHeader>Błąd ruchu</AlertDialogHeader>
           <AlertDialogCloseButton />
-          <AlertDialogBody>{errorModalContent}sadasdas</AlertDialogBody>
+          <AlertDialogBody>{errorModalContent}</AlertDialogBody>
           <AlertDialogFooter>
             <Button onClick={manuallyCloseModal}>OK</Button>
           </AlertDialogFooter>

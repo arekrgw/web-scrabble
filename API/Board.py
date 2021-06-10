@@ -151,6 +151,8 @@ class Board():
                 i=i+1
             if l==already_on_board:
                 return None
+            if already_on_board==0:
+                return None
         else:
             i=pos[1]
             for a in word:
@@ -162,5 +164,7 @@ class Board():
                     list.append(a)
                 i=i+1
             if l==already_on_board:
+                return None
+            if already_on_board==0:
                 return None
         return list

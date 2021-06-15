@@ -142,6 +142,14 @@ class Board():
             if pos[1]!=0:
                 if self.board[pos[0]][pos[1]-1]!='':
                     return False
+        if direction == 'vertical':
+            if pos[0] != 14:
+                if self.board[pos[0] + 1][pos[1]] != '':
+                    return False
+        else:
+            if pos[1] != 14:
+                if self.board[pos[0]][pos[1] + 1] != '':
+                    return False
         return True
 
     def getNewLetters(self,pos,word,direction):

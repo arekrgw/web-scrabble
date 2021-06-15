@@ -132,8 +132,8 @@ class Board():
             score=score*3
         return score
 
-    def checkWordOnBoard(self,pos,direction):
-        
+    def checkWordOnBoard(self,pos,direction,word):
+        l = len(word)
         if direction=='vertical':
             if pos[0]!=0:
                 if self.board[pos[0]-1][pos[1]]!='':
@@ -144,13 +144,72 @@ class Board():
                     return False
         if direction == 'vertical':
             if pos[0] != 14:
-                if self.board[pos[0] + 1][pos[1]] != '':
+                if self.board[pos[0] + l][pos[1]] != '':
                     return False
         else:
             if pos[1] != 14:
-                if self.board[pos[0]][pos[1] + 1] != '':
+                if self.board[pos[0]][pos[1] + l] != '':
                     return False
         return True
+
+    def checkIntegrity(self,word,pos,direction, game):
+        if direction=='vertical':
+            i = pos[0]
+            for a in word:
+                if self.board[i][pos[1]-1]!='' and pos[1]-1>=0:
+                    temp=self.getExistingWord((i,pos[1]),'left')
+                    temp+=self.board[i][pos[1]]
+                    if self.board[i][pos[1]+1]!='' and pos[1]+1<=14:
+                        temp += self.getExistingWord((i, pos[1]), 'right')
+                    flag = game.checkWord(temp)
+                    if not flag:
+                        return False
+        else:
+            i = pos[1]+1
+            for a in word:
+                if self.board[pos[0]-1][i]!='' and pos[0]-1>=0:
+                    temp=self.getExistingWord((pos[0],i),'up')
+                    temp+=self.board[i][pos[1]]
+                    if self.board[pos[0]+1][i]!='' and pos[0]+1<=14:
+                        temp += self.getExistingWord((pos[0],i), 'down')
+                    flag = game.checkWord(temp)
+                    print(temp)
+                    if not flag:
+                        return False
+        return True
+    def getExistingWord(self,pos,direction):
+        i = 0
+        s = ''
+        if direction=='left':
+            while self.board[pos[0]][pos[1]-i-1]!='' and pos[1]-i-1>=0:
+                i=i+1
+            while i>0:
+                s=s+self.board[pos[0]][pos[1]-i]
+                i=i-1
+            return s
+        elif direction=='right':
+            while self.board[pos[0]][pos[1]+i+1]!='' and pos[1]+i+1<=14:
+                i=i+1
+            j=1
+            while j>=i:
+                s=s+self.board[pos[0]][pos[1]+j]
+                j=j+1
+            return s
+        elif direction=='up':
+            while self.board[pos[0]-1-i][pos[1]]!='' and pos[0]-i-1>=0:
+                i=i+1
+            while i>0:
+                s=s+self.board[pos[0]-i][pos[1]]
+                i=i-1
+            return s
+        else:
+            while self.board[pos[0]+1+i][pos[1]]!='' and pos[0]+i+1<=14:
+                i=i+1
+            j = 1
+            while j >= i:
+                s = s + self.board[pos[0]+j][pos[1]]
+                j = j + 1
+            return s
 
     def getNewLetters(self,pos,word,direction):
         l=len(word)

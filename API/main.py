@@ -118,13 +118,17 @@ def recive(msg):
             flag = game.checkPos(msg['pos'], msg['word'], msg['direction'])
         else:
             bug=1
-            
-
         if flag:
-            flag = board.checkWordOnBoard(msg['pos'],msg['direction'])
+            flag = board.checkIntegrity(msg['word'],msg['pos'],msg['direction'],game)
+            print(flag)
+        else:
+            if bug == 0:
+                bug = 2
+        if flag:
+            flag = board.checkWordOnBoard(msg['pos'],msg['direction'],msg['word'])
         else:
             if bug==0:
-                bug=2
+                bug=6
             
         if flag:
             used_letters=board.getNewLetters(msg['pos'], msg['word'], msg['direction'])
@@ -167,6 +171,8 @@ def recive(msg):
                 emit('wrong_word',{'data':'Inccorect word or position'}, room=request.sid)
             elif bug==5:
                 emit('wrong_word',{'data':'Used wrong letters'}, room=request.sid)
+            elif bug==6:
+                emit('wrong_word', {'data': 'Board integrity failure'}, room=request.sid)
             else:
                 emit('wrong_word',{'data':'First word must go through center'}, room=request.sid)
 
@@ -203,8 +209,8 @@ def letters_update():
 
 def prepared_letters():
     for i in player_list:
-        generate_letters(7, i)
-        #i.letters=['o','a','k','t','o','r','d'] #doktor
+        #generate_letters(7, i)
+        i.letters=['o','a','k','t','o','r','d'] #doktor
 
 def generate_letters(num,player):
     for i in range(0, num):

@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 import time
 
 from User import *
@@ -19,7 +22,6 @@ can_connect = True
 player_list = []
 board = Board()
 game = Game()
-letters_cout = Letters_cout()
 turn = None
 end_turn = False
 
@@ -201,24 +203,16 @@ def letters_update():
 
 def prepared_letters():
     for i in player_list:
-        i.letters=['o','a','k','t','o','r','d'] #doktor
-
-
+        generate_letters(7, i)
+        #i.letters=['o','a','k','t','o','r','d'] #doktor
 
 def generate_letters(num,player):
-    letters = player.letters
     for i in range(0, num):
-        while True: #Dodałem while bo jakby trafiło literę której nie może dać to by generowało mniej niż trzeba
-            letter = game.random_letter()
-            if not letters_cout.is_letter_avilable(letter):
-                letters.append(game.random_letter())
-                break
+        player.letters.append(game.generateRandomLetter())
+    print(player.getName())
+    print(player.letters)
+    print(game.game_letters)
     return letters
-
-
-
-
-
 
 if __name__ == '__main__':
     print("Starting server ...")

@@ -1,5 +1,5 @@
-from flask.scaffold import F
-
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
 class Board():
     def __init__(self):
@@ -18,31 +18,37 @@ class Board():
         self.board_empty = True
         self.game_letters = {
         "a": 1,
-        "e": 1,
-        "i": 1,
-        "o": 1,
-        "u": 1,
-        "l": 1,
-        "n": 1,
-        "s": 1,
-        "t": 1,
-        "r": 1,
-        "d": 2,
-        "g": 2,
+        "ą": 5,
         "b": 3,
-        "c": 3,
-        "m": 3,
-        "p": 3,
-        "f": 4,
-        "h": 4,
-        "v": 4,
-        "w": 4,
-        "y": 4,
-        "k": 5,
-        "j": 8,
-        "x": 8,
-        "q": 10,
-        "z": 10,
+        "c": 2,
+        "ć": 6,
+        "d": 2,
+        "e": 1,
+        "ę": 5,
+        "f": 5,
+        "g": 3,
+        "h": 3,
+        "i": 1,
+        "j": 3,
+        "k": 2,
+        "l": 2,
+        "ł": 3,
+        "m": 2,
+        "n": 1,
+        #"ń": 7,
+        "o": 1,
+        "ó": 5,
+        "p": 2,
+        "r": 1,
+        "s": 1,
+        "ś": 5,
+        "t": 2,
+        "u": 3,
+        "w": 1,
+        "y": 2,
+        "z": 1,
+        "ź": 9,
+        "ż": 5,
     }
 
     def add_premium_squares(self):

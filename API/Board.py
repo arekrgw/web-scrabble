@@ -144,12 +144,14 @@ class Board():
                     return False
         if direction == 'vertical':
             if pos[0] != 14:
-                if self.board[pos[0] + l][pos[1]] != '' or pos[0] + l > 14:
-                    return False
+                if pos[0]+len<=14:
+                    if self.board[pos[0] + l][pos[1]] != '':
+                        return False
         else:
             if pos[1] != 14:
-                if self.board[pos[0]][pos[1] + l] != '' or pos[1] + l > 14:
-                    return False
+                if pos[1]+len<=14:
+                    if self.board[pos[0]][pos[1] + l] != '':
+                        return False
         return True
 
     def checkIntegrity(self,word,pos,direction, game):

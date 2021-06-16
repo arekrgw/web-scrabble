@@ -191,14 +191,14 @@ class Board():
         i = 0
         s = ''
         if direction=='left':
-            while self.board[pos[0]][pos[1]-i-1]!='' and pos[1]-i-1>=0:
+            while pos[1]-i-1>=0 and self.board[pos[0]][pos[1]-i-1]!='':
                 i=i+1
             while i>0:
                 s=s+self.board[pos[0]][pos[1]-i]
                 i=i-1
             return s
         elif direction=='right':
-            while self.board[pos[0]][pos[1]+i+1]!='' and pos[1]+i+1<=14:
+            while pos[1]+i+1<=14 and self.board[pos[0]][pos[1]+i+1]!='':
                 i=i+1
             j=1
             while j<=i:
@@ -206,14 +206,14 @@ class Board():
                 j=j+1
             return s
         elif direction=='up':
-            while self.board[pos[0]-1-i][pos[1]]!='' and pos[0]-i-1>=0:
+            while pos[0]-i-1>=0 and self.board[pos[0]-1-i][pos[1]]!='':
                 i=i+1
             while i>0:
                 s=s+self.board[pos[0]-i][pos[1]]
                 i=i-1
             return s
         else:
-            while self.board[pos[0]+1+i][pos[1]]!='' and pos[0]+i+1<=14:
+            while pos[0]+i+1<=14 and self.board[pos[0]+1+i][pos[1]]!='':
                 i=i+1
             j = 1
             while j <= i:

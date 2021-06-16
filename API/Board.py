@@ -157,6 +157,7 @@ class Board():
         if direction=='vertical':
             i = pos[0]
             for a in word:
+                temp = ''
                 if self.board[i][pos[1]-1]!='' and pos[1]-1>=0:
                     temp=self.getExistingWord((i,pos[1]),'left')
                 temp+=self.board[i][pos[1]]
@@ -170,6 +171,7 @@ class Board():
         else:
             i = pos[1]
             for a in word:
+                temp = ''
                 if self.board[pos[0]-1][i]!='' and pos[0]-1>=0:
                     temp=self.getExistingWord((pos[0],i),'up')
                     temp+=self.board[i][pos[1]]

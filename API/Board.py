@@ -163,7 +163,7 @@ class Board():
                 if pos[1]-1>=0 and self.board[i][pos[1]-1]!='':
                     temp=self.getExistingWord((i,pos[1]),'left')
                     print("PATRZ TUTAJ "+temp)
-                temp+=self.board[i][pos[1]]
+                temp+=a
                 if pos[1]+1<=14 and self.board[i][pos[1]+1]!='':
                     temp += self.getExistingWord((i, pos[1]), 'right')
                     print("PATRZ TUTAJ " + temp)
@@ -180,7 +180,7 @@ class Board():
                 if pos[0]-1>=0 and self.board[pos[0]-1][i]!='':
                     temp=self.getExistingWord((pos[0],i),'up')
                     print("PATRZ TUTAJ " + temp)
-                temp+=self.board[pos[0]][i]
+                temp+=a
                 if pos[0]+1<=14 and self.board[pos[0]+1][i]!='':
                     temp += self.getExistingWord((pos[0],i), 'down')
                     print("PATRZ TUTAJ " + temp)

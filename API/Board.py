@@ -160,10 +160,10 @@ class Board():
             i = pos[0]
             for a in word:
                 temp = ''
-                if self.board[i][pos[1]-1]!='' and pos[1]-1>=0:
+                if pos[1]-1>=0 and self.board[i][pos[1]-1]!='':
                     temp=self.getExistingWord((i,pos[1]),'left')
                 temp+=self.board[i][pos[1]]
-                if self.board[i][pos[1]+1]!='' and pos[1]+1<=14:
+                if pos[1]+1<=14 and self.board[i][pos[1]+1]!='':
                     temp += self.getExistingWord((i, pos[1]), 'right')
                 if len(temp)>1:
                     flag = game.checkWord(temp)
@@ -175,10 +175,10 @@ class Board():
             i = pos[1]
             for a in word:
                 temp = ''
-                if self.board[pos[0]-1][i]!='' and pos[0]-1>=0:
+                if pos[0]-1>=0 and self.board[pos[0]-1][i]!='':
                     temp=self.getExistingWord((pos[0],i),'up')
                 temp+=self.board[pos[0]][i]
-                if self.board[pos[0]+1][i]!='' and pos[0]+1<=14:
+                if pos[0]+1<=14 and self.board[pos[0]+1][i]!='':
                     temp += self.getExistingWord((pos[0],i), 'down')
                 if len(temp) > 1:
                     flag = game.checkWord(temp)

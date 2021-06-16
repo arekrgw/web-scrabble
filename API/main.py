@@ -10,7 +10,7 @@ from flask import Flask, request, session
 from flask_socketio import SocketIO, emit, send
 from flaskthreads import AppContextThread
 from flask import copy_current_request_context
-from constants import MAX_PLAYERS, TURN_TIME
+from constants import MAX_PLAYERS, TURN_TIME, CHECK_LETTERS
 
 import eventlet
 eventlet.monkey_patch()
@@ -139,6 +139,7 @@ def recive(msg):
                 bug=3
             
         if flag:
+            if CHECK_LETTERS:
                 flag = turn.checkUsedLetters(used_letters)
                 print(used_letters)
         else:

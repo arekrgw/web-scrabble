@@ -198,7 +198,7 @@ export class GameStore {
   sendWord = () => {
     if (!this.focusedTile || !this.wordEnterValue) return;
     const reqBody = {
-      word: this.wordEnterValue,
+      word: this.wordEnterValue.trim().toLowerCase(),
       direction: this.direction,
       pos: [this.focusedTile.y, this.focusedTile.x],
     };

@@ -44,35 +44,24 @@ class Game():
         self.game_status=False
         self.connected_player=0
 
-    # def checkWord(self, toCheck):
-    #     for i in self.dictionary:
-    #         i = i.rstrip()
-    #         if i == toCheck:
-    #             return True
-    #     return False
-
-    def checkWord(self, element, low = None, high = None, arr = None):
-        if not arr:
-            arr = self.dictionary
-        if not low:
-            low = 0
-        if not high:
-            high = len(arr)
-
-        mid=(low+high)//2
+    def bs(self, element, low, high, arr):
+        mid=int((low+high)/2)
         word = arr[mid].rstrip()
         if low<=high:
             if element==word:
                 return True
             
             elif element > word:
-                self.checkWord(element,mid+1,high, arr)
+                return self.bs(element,mid+1,high, arr)
                 
             else:
-                self.checkWord(element,low,mid-1, arr) 
+                return self.bs(element,low,mid-1, arr) 
          
         else:
             return False
+
+    def checkWord(self, element):
+       return self.bs(element.strip().lower(), 0, len(self.dictionary) - 1, self.dictionary)
     
     def checkPos(self,pos, word, direction):
         l=len(word)

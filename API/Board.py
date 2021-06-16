@@ -163,7 +163,7 @@ class Board():
                 if self.board[i][pos[1]+1]!='' and pos[1]+1<=14:
                     temp += self.getExistingWord((i, pos[1]), 'right')
                 if len(temp)>1:
-                    flag = game.checkWord(temp.rstrip())
+                    flag = game.checkWord(temp)
                     if not flag:
                         return False
         else:
@@ -175,7 +175,7 @@ class Board():
                 if self.board[pos[0]+1][i]!='' and pos[0]+1<=14:
                     temp += self.getExistingWord((pos[0],i), 'down')
                 if len(temp) > 1:
-                    flag = game.checkWord(temp.rstrip())
+                    flag = game.checkWord(temp)
                     if not flag:
                         return False
         return True

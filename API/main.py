@@ -104,7 +104,7 @@ def board_update(next_player):
     for i in player_list:
         players_info.append((i.getName(), i.getScore(), i.getID()))
     print(players_info)
-    socketio.emit('board_update', {'board': board.getBoardArray(), 'score': players_info, 'turn': next_player.getName(), 'timeForTurn': TURN_TIME})
+    socketio.emit('board_update', {'board': board.getBoardArray(), 'score': players_info, 'turn': (next_player.getName(), next_player.getID()), 'timeForTurn': TURN_TIME})
 
 
 @socketio.on('send_word')

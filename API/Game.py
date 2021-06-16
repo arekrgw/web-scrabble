@@ -65,10 +65,10 @@ class Game():
                 return True
             
             elif element > arr[mid]:
-                self.binarySearch(element,mid+1,high, arr)
+                self.checkWord(element,mid+1,high, arr)
                 
             else:
-                self.binarySearch(element,low,mid-1, arr) 
+                self.checkWord(element,low,mid-1, arr) 
          
         else:
             return False

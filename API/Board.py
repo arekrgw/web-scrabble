@@ -167,7 +167,7 @@ class Board():
                     if not flag:
                         return False
         else:
-            i = pos[1]+1
+            i = pos[1]
             for a in word:
                 if self.board[pos[0]-1][i]!='' and pos[0]-1>=0:
                     temp=self.getExistingWord((pos[0],i),'up')

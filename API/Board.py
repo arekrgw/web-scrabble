@@ -192,7 +192,7 @@ class Board():
             while self.board[pos[0]][pos[1]+i+1]!='' and pos[1]+i+1<=14:
                 i=i+1
             j=1
-            while j>=i:
+            while j<=i:
                 s=s+self.board[pos[0]][pos[1]+j]
                 j=j+1
             return s
@@ -207,7 +207,7 @@ class Board():
             while self.board[pos[0]+1+i][pos[1]]!='' and pos[0]+i+1<=14:
                 i=i+1
             j = 1
-            while j >= i:
+            while j <= i:
                 s = s + self.board[pos[0]+j][pos[1]]
                 j = j + 1
             return s

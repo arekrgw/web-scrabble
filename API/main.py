@@ -158,8 +158,9 @@ def recive(msg):
             score = board.countPoints(msg['word'],msg['pos'],msg['direction']) 
             board.saveWord(msg['word'],msg['pos'],msg['direction']) 
             turn.setScore(score)
-            turn.removeUsedLetters(used_letters)
-            generate_letters(len(used_letters), turn)
+            if CHECK_LETTERS:
+                turn.removeUsedLetters(used_letters)
+                generate_letters(len(used_letters), turn)
             # jak za mało to koniec gry
         else:
             if bug==1:

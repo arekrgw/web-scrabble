@@ -21,3 +21,4 @@ client/yarn-debug.log*
 client/yarn-error.log*
 
 api/__pycache__
+.vscode

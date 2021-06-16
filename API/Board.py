@@ -166,6 +166,7 @@ class Board():
                     flag = game.checkWord(temp)
                     if not flag:
                         return False
+                i=i+1
         else:
             i = pos[1]
             for a in word:
@@ -178,6 +179,7 @@ class Board():
                     flag = game.checkWord(temp)
                     if not flag:
                         return False
+                i=i+1
         return True
     def getExistingWord(self,pos,direction):
         i = 0

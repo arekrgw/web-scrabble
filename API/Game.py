@@ -59,12 +59,13 @@ class Game():
         if not high:
             high = len(arr)
 
+        mid=(low+high)//2
+        word = arr[mid].rstrip()
         if low<=high:
-            mid=(low+high)//2
-            if element==arr[mid]:
+            if element==word:
                 return True
             
-            elif element > arr[mid]:
+            elif element > word:
                 self.checkWord(element,mid+1,high, arr)
                 
             else:

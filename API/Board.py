@@ -166,7 +166,7 @@ class Board():
                 if len(temp)>1:
                     flag = game.checkWord(temp)
                     if not flag:
-                        print(temp)
+                        print("INTREGRITY" + temp)
                         return False
                 i=i+1
         else:
@@ -181,7 +181,7 @@ class Board():
                 if len(temp) > 1:
                     flag = game.checkWord(temp)
                     if not flag:
-                        print(temp)
+                        print("INTREGRITY" + temp)
                         return False
                 i=i+1
         return True

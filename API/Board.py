@@ -153,6 +153,7 @@ class Board():
         return True
 
     def checkIntegrity(self,word,pos,direction, game):
+        temp=''
         if direction=='vertical':
             i = pos[0]
             for a in word:

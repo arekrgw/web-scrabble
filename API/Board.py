@@ -175,7 +175,7 @@ class Board():
                 temp = ''
                 if self.board[pos[0]-1][i]!='' and pos[0]-1>=0:
                     temp=self.getExistingWord((pos[0],i),'up')
-                    temp+=self.board[i][pos[1]]
+                temp+=self.board[pos[0]][i]
                 if self.board[pos[0]+1][i]!='' and pos[0]+1<=14:
                     temp += self.getExistingWord((pos[0],i), 'down')
                 if len(temp) > 1:

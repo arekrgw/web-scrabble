@@ -21,6 +21,7 @@ export const LETTERS = {
   ł: { letter: 'ł', points: 3 },
   m: { letter: 'm', points: 3 },
   n: { letter: 'n', points: 1 },
+  ń: { letter: 'ń', points: 7 },
   o: { letter: 'o', points: 1 },
   ó: { letter: 'ó', points: 1 },
   p: { letter: 'p', points: 3 },

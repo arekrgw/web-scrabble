@@ -9,6 +9,7 @@ import GlobalStyles from './__app/globalStyles';
 import MainPage from './pages/RootPage';
 import GamePage from './pages/GamePage';
 import Lobby from './pages/Lobby';
+import EndPage from './pages/EndPage';
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
             <Route exact path={routes.root} component={MainPage} />
             <Route exact path={routes.game} component={GamePage} />
             <Route exact path={routes.lobby} component={Lobby} />
+            <Route exact path={routes.end} component={EndPage} />
           </Switch>
         </Router>
       </ChakraProvider>

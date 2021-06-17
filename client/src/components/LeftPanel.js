@@ -4,8 +4,10 @@ import { useStore } from '../stores';
 
 const LeftPanel = () => {
   const {
-    gameStore: { currentPlayerTurn, playerName, timeForTurn },
+    gameStore: { currentPlayerTurn, timeForTurn, socketHandler },
   } = useStore();
+
+  const [nextPlayerName, nextPlayerId] = currentPlayerTurn;
 
   return (
     <Flex
@@ -14,7 +16,7 @@ const LeftPanel = () => {
       justifyContent="center"
       flexDirection="column"
     >
-      {playerName === currentPlayerTurn ? (
+      {socketHandler?.id === nextPlayerId ? (
         <Text
           color="green.600"
           fontSize="3xl"
@@ -34,7 +36,7 @@ const LeftPanel = () => {
           w="fit-content"
           textAlign="center"
         >
-          Teraz kolej gracza: {currentPlayerTurn || ''}
+          Teraz kolej gracza: {nextPlayerName || ''}
         </Text>
       )}
       <Text fontSize="3xl" fontWeight="bold" w="fit-content" textAlign="center">

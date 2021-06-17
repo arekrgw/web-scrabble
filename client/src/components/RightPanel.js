@@ -24,7 +24,7 @@ const RightPanel = () => {
           .slice()
           .sort((a, b) => b[1] - a[1])
           .map((plr, idx) => (
-            <Flex justifyContent="center" key={plr[0]}>
+            <Flex justifyContent="center" key={plr[2]}>
               <Text fontSize="2xl" fontWeight="bold">
                 {idx + 1}.&nbsp;
               </Text>

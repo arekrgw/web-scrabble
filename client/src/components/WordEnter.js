@@ -16,19 +16,21 @@ const WordEnter = () => {
     gameStore: {
       focusedTile,
       sendWord,
-      playerName,
       currentPlayerTurn,
+      socketHandler,
       wordEnterValue,
       setWordEnterValue,
     },
   } = useStore();
+
+  const [, nextPlayerId] = currentPlayerTurn;
 
   useEffect(() => {
     if (!focusedTile) setWordEnterValue('');
   }, [focusedTile, setWordEnterValue]);
 
   const inputStatus = () => {
-    if (playerName !== currentPlayerTurn)
+    if (socketHandler?.id !== nextPlayerId)
       return { disabled: true, placeholder: 'Czekaj na swoją kolej' };
     if (!focusedTile)
       return { disabled: true, placeholder: 'Wybierz klocek startowy' };

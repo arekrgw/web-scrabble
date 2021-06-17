@@ -15,7 +15,7 @@ export class GameStore {
   playersLetters = [];
   mergedTilesArray = fieldsData;
   focusedTile = null;
-  currentPlayerTurn = null;
+  currentPlayerTurn = [];
   timeForTurn = 0;
   intervalHandler = null;
   direction = 'horizontal';
@@ -23,6 +23,7 @@ export class GameStore {
   modalTimeoutHandler = null;
   errorModalContent = '';
   wordEnterValue = '';
+  finalScoreboard = null;
 
   constructor(parent) {
     makeAutoObservable(this);
@@ -35,7 +36,7 @@ export class GameStore {
 
   setWordEnterValue = (value) => {
     this.wordEnterValue = value;
-  }
+  };
 
   initConnection = (playerName) => {
     this.playerName = playerName;
@@ -71,7 +72,7 @@ export class GameStore {
   manuallyCloseModal = () => {
     clearTimeout(this.modalTimeoutHandler);
     this.isErrorModalOpen = false;
-  }
+  };
 
   errorHandler = (msg) => {
     console.log('wrong_word', msg);
@@ -107,6 +108,7 @@ export class GameStore {
   };
 
   scoreboardHandler = (msg) => {
+    this.finalScoreboard = msg.scoreboard;
     console.log('scoreboard', msg);
   };
 
@@ -122,6 +124,7 @@ export class GameStore {
   };
 
   afterConnectHandler = ({ conn, id, skipToGame }) => {
+    console.log('conn', this.socketHandler);
     if (conn) {
       localStorage.setItem(LS_ID, id);
       if (skipToGame) {
@@ -164,7 +167,7 @@ export class GameStore {
     if (msg.status === 'start') {
       this.switchToGame();
     } else {
-      // end game show scoreboard
+      this.parent.routerStore.push(routes.end);
     }
   };
 
@@ -179,7 +182,8 @@ export class GameStore {
   };
 
   handleTileClick = (coords) => {
-    if (this.playerName !== this.currentPlayerTurn) {
+    const [, nextPlayerId] = this.currentPlayerTurn;
+    if (this.socketHandler?.id !== nextPlayerId) {
       this.unFocusTile();
       return;
     }
@@ -215,8 +219,9 @@ export class GameStore {
     this.playersLetters = [];
     this.mergedTilesArray = fieldsData;
     this.focusedTile = null;
-    this.currentPlayerTurn = null;
+    this.currentPlayerTurn = [];
     this.timeForTurn = 0;
+    this.finalScoreboard = null;
     clearInterval(this.intervalHandler);
   };
 }

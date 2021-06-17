@@ -166,19 +166,19 @@ def recive(msg):
             # jak za mało to koniec gry
         else:
             if bug==1:
-                emit('wrong_word',{'data':'Word does not exist'}, room=request.sid)
+                emit('wrong_word',{'data':'Nie ma takiego słowa'}, room=request.sid)
             elif bug==2:
-                emit('wrong_word',{'data':'Starting position incorrect'}, room=request.sid)
+                emit('wrong_word',{'data':'Niepoprawna pozycja startowa'}, room=request.sid)
             elif bug==3:
-                emit('wrong_word',{'data':'Starting position incorrect'}, room=request.sid)
+                emit('wrong_word',{'data':'Niepoprawna pozycja startowa'}, room=request.sid)
             elif bug==4:
-                emit('wrong_word',{'data':'Inccorect word or position'}, room=request.sid)
+                emit('wrong_word',{'data':'Niepoprawne słowo lub pozycja'}, room=request.sid)
             elif bug==5:
-                emit('wrong_word',{'data':'Used wrong letters'}, room=request.sid)
+                emit('wrong_word',{'data':'Użyto nieposiadanych liter'}, room=request.sid)
             elif bug==6:
-                emit('wrong_word', {'data': 'Board integrity failure'}, room=request.sid)
+                emit('wrong_word', {'data': 'Wraz ze słowem powstało słowo nie będące w słowniku'}, room=request.sid)
             else:
-                emit('wrong_word',{'data':'First word must go through center'}, room=request.sid)
+                emit('wrong_word',{'data':'Pierwsze słowo musi przechodzić przez środek'}, room=request.sid)
 
 
 

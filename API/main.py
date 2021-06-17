@@ -81,7 +81,7 @@ def game_status():
     if (game.game_status == True):
         emit('game_status', {'status': 'start'}, broadcast=True)
     else:
-        emit('game_status', {'status': 'end'}, broadcast=True)
+        socketio.emit('game_status', {'status': 'end'}, broadcast=True)
 
 
 def check_if_ready_to_start():
@@ -153,7 +153,7 @@ def recive(msg):
                 bug=5
             
         if flag:
-            end_turn=True
+
             print('tutaj')
             score = board.countPoints(msg['word'],msg['pos'],msg['direction']) 
             board.saveWord(msg['word'],msg['pos'],msg['direction']) 
@@ -161,6 +161,8 @@ def recive(msg):
             if CHECK_LETTERS:
                 turn.removeUsedLetters(used_letters)
                 generate_letters(len(used_letters), turn)
+            end_turn = True
+
             # jak za mało to koniec gry
         else:
             if bug==1:
@@ -197,11 +199,13 @@ def game_loop():
                 if end_turn==True:
                     end_turn=False
                     break
+            if not game.getGameStatus():
+                break
     players_info = []
     for i in player_list:
         players_info.append((i.getName(), i.getScore(), i.getID()))
     print(players_info)
-    socketio.emit('scoreboard', {'score': players_info})
+    socketio.emit('scoreboard', {'score': players_info}, broadcast=True)
     game_status()
 
 
@@ -221,9 +225,9 @@ def prepared_letters():
 
 def generate_letters(num,player):
     for i in range(0, num):
-        if game.checkLetterPoolEmpty():
+        if True: # tu trzeba zmienić, nie pamiętam co tu było
             game.setGameEnd()
-            break
+            return
         player.letters.append(game.generateRandomLetter())
     print(player.getName())
     print(player.letters)

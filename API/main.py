@@ -207,6 +207,8 @@ def game_loop():
     print(players_info)
     socketio.emit('scoreboard', {'score': players_info}, broadcast=True)
     game_status()
+    time.sleep(5)
+    exit()
 
 
 def letters():

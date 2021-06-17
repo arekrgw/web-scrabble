@@ -197,7 +197,12 @@ def game_loop():
                 if end_turn==True:
                     end_turn=False
                     break
-    # send score board
+    players_info = []
+    for i in player_list:
+        players_info.append((i.getName(), i.getScore(), i.getID()))
+    print(players_info)
+    socketio.emit('scoreboard', {'score': players_info})
+    game_status()
 
 
 def letters():
@@ -216,6 +221,9 @@ def prepared_letters():
 
 def generate_letters(num,player):
     for i in range(0, num):
+        if game.checkLetterPoolEmpty():
+            game.setGameEnd()
+            break
         player.letters.append(game.generateRandomLetter())
     print(player.getName())
     print(player.letters)

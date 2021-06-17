@@ -4,38 +4,70 @@ import random
 
 class Game():
     game_letters = {
-        "a": 9,
-        "ą": 1,
-        "b": 2,
-        "c": 3,
-        "ć": 1,
-        "d": 3,
-        "e": 7,
-        "ę": 1,
+        # "a": 9,
+        # "ą": 1,
+        # "b": 2,
+        # "c": 3,
+        # "ć": 1,
+        # "d": 3,
+        # "e": 7,
+        # "ę": 1,
+        # "f": 1,
+        # "g": 2,
+        # "h": 2,
+        # "i": 8,
+        # "j": 2,
+        # "k": 3,
+        # "l": 3,
+        # "ł": 2,
+        # "m": 3,
+        # "n": 5,
+        # "ń": 1,
+        # "o": 6,
+        # "ó": 1,
+        # "p": 3,
+        # "r": 4,
+        # "s": 4,
+        # "ś": 1,
+        # "t": 3,
+        # "u": 2,
+        # "w": 4,
+        # "y": 4,
+        # "z": 5,
+        # "ź": 1,
+        # "ż": 1,
+        "a": 1,
+        "ą": 0,
+        "b": 1,
+        "c": 1,
+        "ć": 0,
+        "d": 1,
+        "e": 1,
+        "ę": 0,
         "f": 1,
-        "g": 2,
-        "h": 2,
-        "i": 8,
-        "j": 2,
-        "k": 3,
-        "l": 3,
-        "ł": 2,
-        "m": 3,
-        "n": 5,
-        "ń": 1,
-        "o": 6,
-        "ó": 1,
-        "p": 3,
-        "r": 4,
-        "s": 4,
-        "ś": 1,
-        "t": 3,
-        "u": 2,
-        "w": 4,
-        "y": 4,
-        "z": 5,
-        "ź": 1,
-        "ż": 1,
+        "g": 0,
+        "h": 0,
+        "i": 0,
+        "j": 0,
+        "k": 0,
+        "l": 0,
+        "ł": 0,
+        "m": 0,
+        "n": 0,
+        "ń": 0,
+        "o": 0,
+        "ó": 0,
+        "p": 0,
+        "r": 0,
+        "s": 0,
+        "ś": 0,
+        "t": 0,
+        "u": 0,
+        "w": 0,
+        "y": 0,
+        "z": 0,
+        "ź": 0,
+        "ż": 0,
     }
 
     def __init__(self):
@@ -75,6 +107,9 @@ class Game():
     def setGameStart(self):
         self.game_status=True
 
+    def setGameEnd(self):
+        self.game_status = False
+
     def getGameStatus(self):
         return self.game_status
 
@@ -95,11 +130,21 @@ class Game():
         self.game_letters[key] += 1
 
     def generateRandomLetter(self):
-        weighted_list = []
+        if not self.checkLetterPoolEmpty():
+            weighted_list = []
+            for k in self.game_letters:
+                for x in range(self.game_letters[k]):
+                    weighted_list.append(k)
+            letter = random.choice(weighted_list)
+            self.decreaseLetter(letter)
+            return letter
+        else:
+            return None
+
+    def checkLetterPoolEmpty(self):
         for k in self.game_letters:
-            for x in range(self.game_letters[k]):
-                weighted_list.append(k)
-        letter = random.choice(weighted_list)
-        self.decreaseLetter(letter)
-        return letter
+            if self.game_letters[k] != 0:
+                return False
+        return True
+
 

@@ -108,8 +108,9 @@ export class GameStore {
   };
 
   scoreboardHandler = (msg) => {
-    this.finalScoreboard = msg.score;
     console.log('scoreboard', msg);
+    this.finalScoreboard = msg.score;
+    this.socketHandler.close();
   };
 
   runTimer = async () => {
@@ -151,16 +152,18 @@ export class GameStore {
 
   afterDisconnectHandler = () => {
     console.log('dc');
-    this.socketHandler?.close();
-    this.clearStore();
-    this.parent.routerStore.push(routes.root);
-    this.parent.toast({
-      title: 'Połączenie z serwerem zostało przerwane',
-      description: 'Nie udało się połączyć ponownie. Spróbuj dołączyć ponownie',
-      status: 'error',
-      duration: 8000,
-      isClosable: true,
-    });
+    if(!this.finalScoreboard?.length) {
+      this.socketHandler?.close();
+      this.clearStore();
+      this.parent.routerStore.push(routes.root);
+      this.parent.toast({
+        title: 'Połączenie z serwerem zostało przerwane',
+        description: 'Nie udało się połączyć ponownie. Spróbuj dołączyć ponownie',
+        status: 'error',
+        duration: 8000,
+        isClosable: true,
+      });
+    }
   };
 
   handleGameStatus = (msg) => {

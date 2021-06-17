@@ -7,7 +7,7 @@ const LeftPanel = () => {
     gameStore: { currentPlayerTurn, timeForTurn, socketHandler },
   } = useStore();
 
-  const [nextPlayerName, nextPlayerId] = currentPlayerTurn;
+  const [nextPlayerName, nextPlayerId] = currentPlayerTurn?.length ? currentPlayerTurn : [null, null];
 
   return (
     <Flex

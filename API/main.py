@@ -225,7 +225,7 @@ def prepared_letters():
 
 def generate_letters(num,player):
     for i in range(0, num):
-        if True: # tu trzeba zmienić, nie pamiętam co tu było
+        if game.checkLetterPoolEmpty():
             game.setGameEnd()
             return
         player.letters.append(game.generateRandomLetter())

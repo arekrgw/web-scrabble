@@ -108,7 +108,7 @@ export class GameStore {
   };
 
   scoreboardHandler = (msg) => {
-    this.finalScoreboard = msg.scoreboard;
+    this.finalScoreboard = msg.score;
     console.log('scoreboard', msg);
   };
 

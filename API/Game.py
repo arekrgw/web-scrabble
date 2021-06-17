@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 import random
+from compare import cmp
 
 class Game():
     game_letters = {
@@ -76,12 +77,25 @@ class Game():
         self.game_status=False
         self.connected_player=0
 
-    def checkWord(self, toCheck):
-        for i in self.dictionary:
-            i = i.strip()
-            if i == toCheck:
+    def bs(self, element, low, high, arr):
+        mid=int((low+high)/2)
+        word = arr[mid].strip()
+        if low<=high:
+            if element==word:
                 return True
-        return False
+            
+            elif cmp(element, word) > 0:
+                return self.bs(element,mid+1,high, arr)
+                
+            else:
+                return self.bs(element,low,mid-1, arr) 
+         
+        else:
+            return False
+
+
+    def checkWord(self, element):
+       return self.bs(element.strip().lower(), 0, len(self.dictionary) - 1, self.dictionary)
 
     def checkPos(self,pos, word, direction):
         l=len(word)

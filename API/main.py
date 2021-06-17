@@ -222,8 +222,8 @@ def letters_update():
 
 def prepared_letters():
     for i in player_list:
-        #generate_letters(7, i)
-        i.letters=['o','a','k','t','o','r','d'] #doktor
+        generate_letters(7, i)
+        #i.letters=['o','a','k','t','o','r','d'] #doktor
 
 def generate_letters(num,player):
     for i in range(0, num):
